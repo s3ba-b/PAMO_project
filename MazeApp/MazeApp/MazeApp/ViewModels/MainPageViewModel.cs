@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xamarin.Forms;
 
 namespace MazeApp.ViewModels
 {
@@ -13,7 +14,24 @@ namespace MazeApp.ViewModels
         public MainPageViewModel(INavigationService navigationService)
             : base(navigationService)
         {
-            Title = "Main Page";
+            Title = "Maze App";
+            Content = VisualizeMaze();
+        }
+
+        public Grid Content { get; private set; }
+
+        private Grid VisualizeMaze()
+        {
+            var grid = new Grid();
+
+            var cell = new Views.Cell();
+
+            cell.IsVisible = true;
+            
+
+            grid.Children.Add(cell);
+
+            return grid;
         }
     }
 }

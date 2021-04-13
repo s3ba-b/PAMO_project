@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeApp", "MazeApp\MazeApp\MazeApp.csproj", "{7231443F-F294-466E-AD4F-7CF857AF21FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MazeApp", "MazeApp\MazeApp\MazeApp.csproj", "{7231443F-F294-466E-AD4F-7CF857AF21FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeApp.Android", "MazeApp\MazeApp.Android\MazeApp.Android.csproj", "{1991FE0E-76D4-43A8-8B59-9A5BC9C9C57C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLearning", "QLearning\QLearning.csproj", "{48F7DCDA-657B-4B53-875E-FB622C52C198}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{1991FE0E-76D4-43A8-8B59-9A5BC9C9C57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1991FE0E-76D4-43A8-8B59-9A5BC9C9C57C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1991FE0E-76D4-43A8-8B59-9A5BC9C9C57C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{48F7DCDA-657B-4B53-875E-FB622C52C198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48F7DCDA-657B-4B53-875E-FB622C52C198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48F7DCDA-657B-4B53-875E-FB622C52C198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48F7DCDA-657B-4B53-875E-FB622C52C198}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
