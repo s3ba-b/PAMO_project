@@ -1,4 +1,6 @@
 ﻿using MazeApp.Views;
+using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,7 +8,7 @@ using Xamarin.Forms;
 
 namespace MazeApp.ViewModels
 {
-    public class GameBoardViewModel
+    public class GameBoardViewModel : BindableBase
     {
         private readonly MazeViewModel _MazeViewModel;
 
@@ -17,14 +19,15 @@ namespace MazeApp.ViewModels
             Content = GetContent();
         }
 
-        public UIElement Content { get; set; }
+        public Grid Content { get; set; }
         public double Width { get; set; }
+        public DelegateCommand StartCommand => new DelegateCommand(Start);
 
         private Grid GetContent()
         {
             var grid = new Grid();
 
-            grid.Children.Add(new Maze(_MazeViewModel));
+            grid.Children.Add(new Maze());
             grid.Children.Add(GetButton());
 
             return grid;
@@ -32,24 +35,31 @@ namespace MazeApp.ViewModels
 
         private Button GetButton()
         {
-            var button = new Button
+            //var button1 = new Button
+            //{
+            //    Content = "START",
+            //    MaxHeight = 50,
+            //    MinHeight = 50,
+            //    MaxWidth = 150,
+            //    MinWidth = 150,
+            //    Margin = new Thickness((Width / 2) - 75, 10, 0, 0),
+            //    HorizontalAlignment = HorizontalAlignment.Left,
+            //    VerticalAlignment = VerticalAlignment.Top
+            //};
+
+            //button.Click += StartButtonClicked;
+
+            return new Button
             {
-                Content = "START",
-                MaxHeight = 50,
-                MinHeight = 50,
-                MaxWidth = 150,
-                MinWidth = 150,
+                Text = "START",
+                HeightRequest = 50,
+                WidthRequest = 150,
                 Margin = new Thickness((Width / 2) - 75, 10, 0, 0),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top
+                Command = StartCommand
             };
-
-            button.Click += StartButtonClicked;
-
-            return button;
         }
 
-        private void StartButtonClicked(object sender, RoutedEventArgs e)
+        private void Start()
         {
             _MazeViewModel.VisualizeWalk();
         }

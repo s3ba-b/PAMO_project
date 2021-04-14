@@ -59,7 +59,7 @@ namespace MazeApp.ViewModels
             Line rightLine = GetLine(topLeftX + shiftBeyondCornersInX, topLeftY, topLeftX + shiftBeyondCornersInX, topLeftY + shiftBeyondCornersInY);
             grid.Children.Add(rightLine);
 
-            grid.Children.Add(new SquareColor(_SquareColorViewModel));
+            grid.Children.Add(new SquareColor());
 
             return grid;
         }

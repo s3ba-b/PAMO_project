@@ -24,9 +24,9 @@ namespace MazeApp.ViewModels
             Content = GetMazeVisualization();
         }
 
-        public UIElement Content { get; set; }
+        public Grid Content { get; set; }
 
-        private UIElement GetMazeVisualization()
+        private Grid GetMazeVisualization()
         {
             var maze = new Grid();
 
@@ -68,19 +68,19 @@ namespace MazeApp.ViewModels
             var borderWalls = new Grid();
 
             //top border
-            var wall = new Wall(new WallViewModel(_Settings.StartXPos, _Settings.StartYPos, _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos));
+            var wall = new Wall();
             borderWalls.Children.Add(wall);
 
             //bot border
-            wall = new Wall(new WallViewModel(_Settings.StartXPos, _Settings.StartYPos + _Settings.MazeHeight - 1, _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos + _Settings.MazeHeight - 1));
+            wall = new Wall();
             borderWalls.Children.Add(wall);
 
             //left border
-            wall = new Wall(new WallViewModel(_Settings.StartXPos, _Settings.StartYPos, _Settings.StartXPos, _Settings.StartYPos + _Settings.MazeHeight - 1));
+            wall = new Wall();
             borderWalls.Children.Add(wall);
 
             //right border
-            wall = new Wall(new WallViewModel(_Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos, _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos + _Settings.MazeHeight - 1));
+            wall = new Wall();
             borderWalls.Children.Add(wall);
 
             return borderWalls;
@@ -95,7 +95,7 @@ namespace MazeApp.ViewModels
 
             foreach (var cellViewModel in _CellsViewModelsList)
             {
-                lattice.Children.Add(new Cell(cellViewModel));
+                lattice.Children.Add(new Views.Cell());
             }
 
             return lattice;

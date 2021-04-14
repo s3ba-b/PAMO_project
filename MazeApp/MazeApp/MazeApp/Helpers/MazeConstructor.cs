@@ -10,7 +10,7 @@ namespace MazeApp.Helpers
     public class MazeConstructor
     {
         private readonly MazeSettings _Settings;
-        private readonly Maze _Maze;
+        private readonly MazeModel _Maze;
 
         public MazeConstructor(MazeSettings settings)
         {
@@ -29,7 +29,7 @@ namespace MazeApp.Helpers
                     if (ShouldBeWallBetween(i, j))
                     {
                         var (x1, y1, x2, y2) = GetEndpointsOfWall(i, j);
-                        var wall = new Wall(new WallViewModel(x1, y1, x2, y2));
+                        var wall = new Wall();
                         walls.Add(wall);
                     }
                 }
