@@ -19,7 +19,7 @@ namespace MazeApp
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            await NavigationService.NavigateAsync("NavigationPage/Menu");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -27,6 +27,7 @@ namespace MazeApp
             containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<Views.Menu, MenuViewModel>();
         }
     }
 }

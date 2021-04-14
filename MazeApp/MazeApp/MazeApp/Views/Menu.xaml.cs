@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace MazeApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Menu : ContentView
+    public partial class Menu : ContentPage
     {
         public Menu()
         {

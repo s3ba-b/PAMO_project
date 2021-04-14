@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace MazeApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class GameBoard : ContentView
+    public partial class GameBoard : ContentPage
     {
         public GameBoard()
         {

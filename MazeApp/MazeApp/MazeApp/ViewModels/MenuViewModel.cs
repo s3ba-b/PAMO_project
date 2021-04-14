@@ -1,5 +1,7 @@
 ﻿using MazeApp.Helpers;
 using MazeApp.Views;
+using Prism.Commands;
+using Prism.Navigation;
 using Q_Learning;
 using System;
 using System.Collections.Generic;
@@ -10,13 +12,19 @@ namespace MazeApp.ViewModels
 {
     public class MenuViewModel
     {
-        public MenuViewModel(double width, double height)
-        {
-            Width = width;
-            Height = height;
+        private readonly INavigationService _navigationService;
 
+        public DelegateCommand<string> NavigateCommand { get; }
+
+        public MenuViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
+            NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
             Content = GetButtons();
         }
+
+        public async void OnNavigateCommandExecuted(string uri) =>
+            await _navigationService.NavigateAsync(uri);
 
         public Grid Content { get; set; }
         public double Width { get; private set; }
@@ -87,24 +95,29 @@ namespace MazeApp.ViewModels
             {
                 new Button()
                 {
-                    Text = "Button 1"
+                    Text = "Maze 1",
+                    Command = new DelegateCommand(Maze1ButtonClicked)
                 },
                 new Button()
                 {
-                    Text = "Button 2"
+                    Text = "Maze 2",
+                    Command = new DelegateCommand(Maze2ButtonClicked)
                 },
                 new Button()
                 {
-                    Text = "Button 3"
+                    Text = "Maze 3",
+                    Command = new DelegateCommand(Maze3ButtonClicked)
                 }
             };
 
             var grid = new Grid();
 
-            CollectionView collectionView = new CollectionView();
-            collectionView.ItemsSource = buttons;
+            StackLayout stack = new StackLayout();
 
-            grid.Children.Add(collectionView);
+            foreach (var button in buttons)
+                stack.Children.Add(button);
+
+            grid.Children.Add(stack);
 
             return grid;
         }
@@ -134,38 +147,40 @@ namespace MazeApp.ViewModels
         //    BackButton.Visibility = Visibility.Collapsed;
         //}
 
-        //private void Maze1ButtonClicked(object sender, RoutedEventArgs e)
-        //{
-        //    Menu.Visibility = Visibility.Collapsed;
-        //    var mazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.Example_1()));
-        //    var gameBoardViewModel = new GameBoardViewModel(mazeViewModel, Width);
-        //    GameBoard = new GameBoard(gameBoardViewModel);
-        //    GameBoard.Visibility = Visibility.Visible;
-        //    Content.Children.Add(GameBoard);
-        //    BackButton.Visibility = Visibility.Visible;
-        //}
+        private async void Maze1ButtonClicked()
+        {
+            //Menu.Visibility = Visibility.Collapsed;
+            //var mazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.Example_1()));
+            //var gameBoardViewModel = new GameBoardViewModel(mazeViewModel, Width);
+            //GameBoard = new GameBoard(gameBoardViewModel);
+            //GameBoard.Visibility = Visibility.Visible;
+            //Content.Children.Add(GameBoard);
+            //BackButton.Visibility = Visibility.Visible;
 
-        //private void Maze2ButtonClicked(object sender, RoutedEventArgs e)
-        //{
-        //    Menu.Visibility = Visibility.Collapsed;
-        //    var mazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.Example_2()));
-        //    var gameBoardViewModel = new GameBoardViewModel(mazeViewModel, Width);
-        //    GameBoard = new GameBoard(gameBoardViewModel);
-        //    GameBoard.Visibility = Visibility.Visible;
-        //    Content.Children.Add(GameBoard);
-        //    BackButton.Visibility = Visibility.Visible;
-        //}
+            await _navigationService.NavigateAsync("NavigationPage/GameBoard");
+        }
 
-        //private void Maze3ButtonClicked(object sender, RoutedEventArgs e)
-        //{
-        //    Menu.Visibility = Visibility.Collapsed;
-        //    var mazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.Example_3()));
-        //    var gameBoardViewModel = new GameBoardViewModel(mazeViewModel, Width);
-        //    GameBoard = new GameBoard(gameBoardViewModel);
-        //    GameBoard.Visibility = Visibility.Visible;
-        //    Content.Children.Add(GameBoard);
-        //    BackButton.Visibility = Visibility.Visible;
-        //}
+        private void Maze2ButtonClicked()
+        {
+            //Menu.Visibility = Visibility.Collapsed;
+            //var mazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.Example_2()));
+            //var gameBoardViewModel = new GameBoardViewModel(mazeViewModel, Width);
+            //GameBoard = new GameBoard(gameBoardViewModel);
+            //GameBoard.Visibility = Visibility.Visible;
+            //Content.Children.Add(GameBoard);
+            //BackButton.Visibility = Visibility.Visible;
+        }
+
+        private void Maze3ButtonClicked()
+        {
+            //Menu.Visibility = Visibility.Collapsed;
+            //var mazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.Example_3()));
+            //var gameBoardViewModel = new GameBoardViewModel(mazeViewModel, Width);
+            //GameBoard = new GameBoard(gameBoardViewModel);
+            //GameBoard.Visibility = Visibility.Visible;
+            //Content.Children.Add(GameBoard);
+            //BackButton.Visibility = Visibility.Visible;
+        }
 
         private MazeSettings GetMazeSettings(MazeModel maze)
         {

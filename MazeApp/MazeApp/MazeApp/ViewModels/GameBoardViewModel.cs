@@ -1,6 +1,7 @@
 ﻿using MazeApp.Views;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,16 +9,25 @@ using Xamarin.Forms;
 
 namespace MazeApp.ViewModels
 {
-    public class GameBoardViewModel : BindableBase
+    public class GameBoardViewModel
     {
         private readonly MazeViewModel _MazeViewModel;
+        private readonly INavigationService _navigationService;
 
-        public GameBoardViewModel(MazeViewModel mazeViewModel, double width)
+        public GameBoardViewModel(INavigationService navigationService, MazeViewModel mazeViewModel, double width)
         {
+            _navigationService = navigationService;
+            NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
             _MazeViewModel = mazeViewModel;
             Width = width;
             Content = GetContent();
         }
+
+
+        public DelegateCommand<string> NavigateCommand { get; }
+
+        public async void OnNavigateCommandExecuted(string uri) =>
+            await _navigationService.NavigateAsync(uri);
 
         public Grid Content { get; set; }
         public double Width { get; set; }
