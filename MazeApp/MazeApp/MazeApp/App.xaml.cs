@@ -28,6 +28,7 @@ namespace MazeApp
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<Views.Menu, MenuViewModel>();
+            containerRegistry.RegisterForNavigation<GameBoard, GameBoardViewModel>();
         }
     }
 }
