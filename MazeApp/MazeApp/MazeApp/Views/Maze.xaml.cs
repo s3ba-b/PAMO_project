@@ -9,8 +9,7 @@ using Xamarin.Forms.Xaml;
 
 namespace MazeApp.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Maze : ContentView
+    public partial class Maze
     {
         public Maze()
         {

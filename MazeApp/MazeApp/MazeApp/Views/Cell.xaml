@@ -3,5 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MazeApp.Views.Cell"
              xmlns:prism="http://prismlibrary.com"
-             prism:ViewModelLocator.AutowireViewModel="True"
-             Content="{Binding Content}"/>
+             xmlns:skiaforms="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True">
+    
+    <Grid>
+        
+        <skiaforms:SKCanvasView x:Name="canvasView"
+                                
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2" />
+        
+    </Grid>
+    
+</ContentView>

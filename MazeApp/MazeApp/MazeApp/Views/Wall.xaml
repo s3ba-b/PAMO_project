@@ -4,4 +4,4 @@
              x:Class="MazeApp.Views.Wall"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
-             Content="{Binding Content}"/>
+             Content="{Binding Content}" />

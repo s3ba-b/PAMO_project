@@ -4,5 +4,4 @@
              x:Class="MazeApp.Views.GameBoard"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
-             Background="Red"/>
-             <!--Content="{Binding Content}"-->
+             Content="{Binding Content}"/>

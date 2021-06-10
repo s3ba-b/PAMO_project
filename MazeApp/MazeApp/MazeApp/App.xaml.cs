@@ -19,16 +19,19 @@ namespace MazeApp
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/Menu");
+            await NavigationService.NavigateAsync("Menu");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
+            containerRegistry.Register<Maze>();
 
+            containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<Views.Menu, MenuViewModel>();
-            containerRegistry.RegisterForNavigation<GameBoard, GameBoardViewModel>();
+
+            containerRegistry.RegisterForNavigation<Views.Menu>();
+            containerRegistry.RegisterForNavigation<GameBoard>();
+
         }
     }
 }

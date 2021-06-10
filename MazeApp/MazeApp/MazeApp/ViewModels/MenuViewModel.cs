@@ -1,11 +1,13 @@
 ﻿using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Navigation;
-using System.Collections.Generic;
+using Q_Learning;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace MazeApp.ViewModels
 {
-    public class MenuViewModel
+    public class MenuViewModel : BindableBase, INavigationAware
     {
         private readonly INavigationService _navigationService;
 
@@ -20,39 +22,35 @@ namespace MazeApp.ViewModels
         public Grid Content { get; private set; }
 
         public async void OnNavigateCommandExecuted(string parameter) =>
-            await _navigationService.NavigateAsync("NavigationPage/GameBoard", new NavigationParameters { { "mazeIndex" , parameter } });
+            await _navigationService.NavigateAsync("GameBoard", new NavigationParameters { { "mazeIndex" , parameter } });
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+            //throw new System.NotImplementedException();
+        }
 
         private Grid GetContent()
         {
-            var buttons = new List<Button>()
-            {
-                new Button()
-                {
-                    Text = "Maze 1",
-                    CommandParameter = "1",
-                    Command = NavigateCommand
-                },
-                new Button()
-                {
-                    Text = "Maze 2",
-                    CommandParameter = "2",
-                    Command = NavigateCommand
-                },
-                new Button()
-                {
-                    Text = "Maze 3",
-                    CommandParameter = "3",
-                    Command = NavigateCommand
-                }
-            };
-
-            var grid = new Grid();
+            var mazeModelsCount = MazeExamples.GetMazeModels().Count();
 
             StackLayout stack = new StackLayout();
 
-            foreach (var button in buttons)
-                stack.Children.Add(button);
-
+            for(int i = 1; i <= mazeModelsCount; i++)
+            {
+                stack.Children.Add(new Button()
+                {
+                    Text = $"Maze {i}",
+                    CommandParameter = i.ToString(),
+                    Command = NavigateCommand
+                });
+            }
+                
+            var grid = new Grid();
             grid.Children.Add(stack);
 
             return grid;

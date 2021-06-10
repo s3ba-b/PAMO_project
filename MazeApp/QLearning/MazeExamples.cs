@@ -1,11 +1,20 @@
-﻿namespace Q_Learning
+﻿using System.Collections.Generic;
+
+namespace Q_Learning
 {
     /// <summary>
     /// Samples of mazes.
     /// </summary>
     public static class MazeExamples
     {
-        public static MazeModel Example_1()
+        public static IEnumerable<MazeModel> GetMazeModels() => new List<MazeModel>
+        {
+            Example_1(),
+            Example_2(),
+            Example_3()
+        };
+
+        private static MazeModel Example_1()
         {
             var maze = new MazeModel();
 
@@ -63,7 +72,7 @@
             return maze;
         }
 
-        public static MazeModel Example_2()
+        private static MazeModel Example_2()
         {
             var maze = new MazeModel();
 
@@ -145,7 +154,7 @@
             return maze;
         }
 
-        public static MazeModel Example_3()
+        private static MazeModel Example_3()
         {
             var maze = new MazeModel();
 

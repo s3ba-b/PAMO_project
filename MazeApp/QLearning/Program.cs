@@ -15,8 +15,8 @@ namespace Q_Learning
             Console.WriteLine("Setting up mazes and rewards");
 
             List<MazeModel> mazes = new List<MazeModel>();
-            mazes.Add(MazeExamples.Example_1());
-            mazes.Add(MazeExamples.Example_2());
+            //mazes.Add(MazeExamples.Example_1());
+            //mazes.Add(MazeExamples.Example_2());
 
             var intelligence = new Intelligence();
             intelligence.RunExamplesInConsole(mazes);

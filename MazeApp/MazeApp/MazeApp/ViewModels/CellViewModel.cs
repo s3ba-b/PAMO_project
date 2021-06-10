@@ -1,8 +1,11 @@
 ﻿using MazeApp.Helpers;
 using MazeApp.Views;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Navigation;
+using SkiaSharp;
+using SkiaSharp.Views.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +14,29 @@ using Xamarin.Forms.Shapes;
 
 namespace MazeApp.ViewModels
 {
-    public class CellViewModel
+    public class CellViewModel : BindableBase
     {
-        private readonly SquareColorViewModel _SquareColorViewModel;
+        private IContainerProvider _containerProvider;
+        private SquareColor _SquareColorView;
+        private SquareColorViewModel _SquareColorViewModel;
 
-        public CellViewModel(int id, double topLeftX, double topLeftY, int size)
+        public CellViewModel() { }
+
+        public void Initialize(IContainerProvider containerProvider, int id, double topLeftX, double topLeftY, int size)
         {
+            _containerProvider = containerProvider;
             Id = id;
             Height = size;
             Width = size;
-            _SquareColorViewModel = new SquareColorViewModel(topLeftX, topLeftY, Height, Width);
-            Content = CreateCell(topLeftX, topLeftY);
+            var squareColorView = _containerProvider.Resolve<SquareColor>();
+            var squareColorViewModel = _containerProvider.Resolve<SquareColorViewModel>();
+            squareColorViewModel.Initialize(topLeftX, topLeftY, Height, Width);
+            squareColorView.BindingContext = squareColorViewModel;
+            _SquareColorView = squareColorView;
+            _SquareColorViewModel = squareColorViewModel;
+            //Content = CreateCell(topLeftX, topLeftY);
         }
+
 
         public int Id { get; set; }
         public double Height { get; set; }
@@ -40,6 +54,22 @@ namespace MazeApp.ViewModels
             }
         }
 
+        void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
+        {
+            SKSurface surface = args.Surface;
+            SKCanvas canvas = surface.Canvas;
+
+            var line = new SKPaint
+            {
+                Style = SKPaintStyle.Stroke,
+                Color = SKColors.Black,
+                StrokeWidth = 2
+            };
+
+            line.StrokeCap = 0;
+            canvas.DrawLine(10, 10, 40, 10, line);
+        }
+
         private Grid CreateCell(double topLeftX, double topLeftY)
         {
             var grid = new Grid();
@@ -47,24 +77,24 @@ namespace MazeApp.ViewModels
             var shiftBeyondCornersInX = Width - 1;
             var shiftBeyondCornersInY = Height - 1;
 
-            Line topLine = GetLine(topLeftX, topLeftY, topLeftX + shiftBeyondCornersInX, topLeftY);
+            var topLine = GetLine(topLeftX, topLeftY, topLeftX + shiftBeyondCornersInX, topLeftY);
             grid.Children.Add(topLine);
 
-            Line botLine = GetLine(topLeftX, topLeftY + shiftBeyondCornersInY, topLeftX + shiftBeyondCornersInX, topLeftY + shiftBeyondCornersInY);
+            var botLine = GetLine(topLeftX, topLeftY + shiftBeyondCornersInY, topLeftX + shiftBeyondCornersInX, topLeftY + shiftBeyondCornersInY);
             grid.Children.Add(botLine);
 
-            Line leftLine = GetLine(topLeftX, topLeftY, topLeftX, topLeftY + shiftBeyondCornersInY);
+            var leftLine = GetLine(topLeftX, topLeftY, topLeftX, topLeftY + shiftBeyondCornersInY);
             grid.Children.Add(leftLine);
 
-            Line rightLine = GetLine(topLeftX + shiftBeyondCornersInX, topLeftY, topLeftX + shiftBeyondCornersInX, topLeftY + shiftBeyondCornersInY);
+            var rightLine = GetLine(topLeftX + shiftBeyondCornersInX, topLeftY, topLeftX + shiftBeyondCornersInX, topLeftY + shiftBeyondCornersInY);
             grid.Children.Add(rightLine);
 
-            grid.Children.Add(new SquareColor());
+            grid.Children.Add(_SquareColorView);
 
             return grid;
         }
 
-        private static Line GetLine(double x1, double y1, double x2, double y2)
+        private Line GetLine(double x1, double y1, double x2, double y2)
         {
             var line = new Line();
 

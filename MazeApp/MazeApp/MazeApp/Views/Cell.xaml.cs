@@ -9,7 +9,6 @@ using Xamarin.Forms.Xaml;
 
 namespace MazeApp.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Cell
     {
         public Cell()

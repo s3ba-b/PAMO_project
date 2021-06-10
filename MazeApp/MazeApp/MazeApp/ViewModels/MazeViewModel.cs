@@ -1,5 +1,7 @@
 ﻿using MazeApp.Helpers;
 using MazeApp.Views;
+using Prism.Ioc;
+using Prism.Mvvm;
 using Q_Learning;
 using System;
 using System.Collections.Generic;
@@ -9,22 +11,27 @@ using Xamarin.Forms;
 
 namespace MazeApp.ViewModels
 {
-    public class MazeViewModel
+    public class MazeViewModel : BindableBase
     {
-        private readonly MazeSettings _Settings;
-        private readonly MazeConstructor _Constructor;
-        private readonly IEnumerable<CellViewModel> _CellsViewModelsList;
+        private readonly IContainerProvider _containerProvider;
+        private MazeSettings _Settings;
+        private MazeConstructor _Constructor;
+        private IEnumerable<CellViewModel> _CellsViewModelsList;
 
-        public MazeViewModel(MazeSettings settings)
+        public MazeViewModel(IContainerProvider containerProvider) 
         {
-            _Settings = settings;
-            _Constructor = new MazeConstructor(settings);
-            _CellsViewModelsList = GetCellsViewModelsList();
-
-            Content = GetMazeVisualization();
+            _containerProvider = containerProvider;
         }
 
         public Grid Content { get; set; }
+
+        public void Initialize(MazeSettings settings)
+        {
+            _Settings = settings;
+            _Constructor = new MazeConstructor(settings, _containerProvider);
+            _CellsViewModelsList = GetCellsViewModelsList();
+            Content = GetMazeVisualization();
+        }
 
         private Grid GetMazeVisualization()
         {
@@ -68,20 +75,52 @@ namespace MazeApp.ViewModels
             var borderWalls = new Grid();
 
             //top border
-            var wall = new Wall();
-            borderWalls.Children.Add(wall);
+            var wallView = _containerProvider.Resolve<Wall>();
+            var wallViewModel = _containerProvider.Resolve<WallViewModel>();
+            wallViewModel.X1 = _Settings.StartXPos;
+            wallViewModel.Y1 = _Settings.StartYPos;
+            wallViewModel.X2 = _Settings.StartXPos + _Settings.MazeWidth - 1;
+            wallViewModel.Y2 = _Settings.StartYPos;
+            wallViewModel.Stroke = Brush.Black;
+            wallViewModel.StrokeThickness = 6;
+            wallView.BindingContext = wallViewModel;
+            borderWalls.Children.Add(wallView);
 
             //bot border
-            wall = new Wall();
-            borderWalls.Children.Add(wall);
+            wallView = _containerProvider.Resolve<Wall>();
+            wallViewModel = _containerProvider.Resolve<WallViewModel>();
+            wallViewModel.X1 = _Settings.StartXPos;
+            wallViewModel.Y1 = _Settings.StartYPos + _Settings.MazeHeight - 1;
+            wallViewModel.X2 = _Settings.StartXPos + _Settings.MazeWidth - 1;
+            wallViewModel.Y2 = _Settings.StartYPos + _Settings.MazeHeight - 1;
+            wallViewModel.Stroke = Brush.Black;
+            wallViewModel.StrokeThickness = 6;
+            wallView.BindingContext = wallViewModel;
+            borderWalls.Children.Add(wallView);
 
             //left border
-            wall = new Wall();
-            borderWalls.Children.Add(wall);
+            wallView = _containerProvider.Resolve<Wall>();
+            wallViewModel = _containerProvider.Resolve<WallViewModel>();
+            wallViewModel.X1 = _Settings.StartXPos;
+            wallViewModel.Y1 = _Settings.StartYPos;
+            wallViewModel.X2 = _Settings.StartXPos;
+            wallViewModel.Y2 = _Settings.StartYPos + _Settings.MazeHeight - 1;
+            wallViewModel.Stroke = Brush.Black;
+            wallViewModel.StrokeThickness = 6;
+            wallView.BindingContext = wallViewModel;
+            borderWalls.Children.Add(wallView);
 
             //right border
-            wall = new Wall();
-            borderWalls.Children.Add(wall);
+            wallView = _containerProvider.Resolve<Wall>();
+            wallViewModel = _containerProvider.Resolve<WallViewModel>();
+            wallViewModel.X1 = _Settings.StartXPos + _Settings.MazeWidth - 1;
+            wallViewModel.Y1 = _Settings.StartYPos;
+            wallViewModel.X2 = _Settings.StartXPos + _Settings.MazeWidth - 1;
+            wallViewModel.Y2 = _Settings.StartYPos + _Settings.MazeHeight - 1;
+            wallViewModel.Stroke = Brush.Black;
+            wallViewModel.StrokeThickness = 6;
+            wallView.BindingContext = wallViewModel;
+            borderWalls.Children.Add(wallView);
 
             return borderWalls;
         }
@@ -90,12 +129,31 @@ namespace MazeApp.ViewModels
         {
             var lattice = new Grid();
 
-            _CellsViewModelsList.Where(v => v.Id == _Settings.Model.Start).FirstOrDefault().State = ESquareState.IsStart;
-            _CellsViewModelsList.Where(v => v.Id == _Settings.Model.Goal).FirstOrDefault().State = ESquareState.IsGoal;
+            _CellsViewModelsList = _CellsViewModelsList.Select(v =>
+            {
+                if(v.Id == _Settings.Model.Start)
+                {
+                    v.State = ESquareState.IsStart;
+                }
+
+                return v;
+            });
+
+            _CellsViewModelsList = _CellsViewModelsList.Select(v =>
+            {
+                if (v.Id == _Settings.Model.Goal)
+                {
+                   v.State = ESquareState.IsGoal;
+                }
+
+                return v;
+            });
 
             foreach (var cellViewModel in _CellsViewModelsList)
             {
-                lattice.Children.Add(new Views.Cell());
+                var cellView = _containerProvider.Resolve<Views.Cell>();
+                cellView.BindingContext = cellViewModel;
+                lattice.Children.Add(cellView);
             }
 
             return lattice;
@@ -112,7 +170,8 @@ namespace MazeApp.ViewModels
             {
                 for (int columnNumber = 1; columnNumber <= _Settings.Model.QuantityOfColumns; columnNumber++)
                 {
-                    var cellViewModel = new CellViewModel(cellId, currentX, currentY, _Settings.Model.SizeOfCell);
+                    var cellViewModel = _containerProvider.Resolve<CellViewModel>();
+                    cellViewModel.Initialize(_containerProvider, cellId, currentX, currentY, _Settings.Model.SizeOfCell);
                     cellsViewModels.Add(cellViewModel);
                     cellId++;
                     currentX += _Settings.Model.SizeOfCell;

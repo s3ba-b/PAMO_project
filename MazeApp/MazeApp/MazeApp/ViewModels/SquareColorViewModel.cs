@@ -10,7 +10,9 @@ namespace MazeApp.ViewModels
     {
         private ESquareState _State;
 
-        public SquareColorViewModel(double topLeftX, double topLeftY, double height, double width)
+        public SquareColorViewModel() { }
+
+        public void Initialize(double topLeftX, double topLeftY, double height, double width)
         {
             TopLeftX = topLeftX;
             TopLeftY = topLeftY;

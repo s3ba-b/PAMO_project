@@ -1,5 +1,6 @@
 ﻿using MazeApp.ViewModels;
 using MazeApp.Views;
+using Prism.Ioc;
 using Q_Learning;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,13 @@ namespace MazeApp.Helpers
     {
         private readonly MazeSettings _Settings;
         private readonly MazeModel _Maze;
+        private readonly IContainerProvider _containerProvider;
 
-        public MazeConstructor(MazeSettings settings)
+        public MazeConstructor(MazeSettings settings, IContainerProvider containerProvider)
         {
             _Settings = settings;
             _Maze = _Settings.Model;
+            _containerProvider = containerProvider;
         }
 
         public IEnumerable<Wall> GetMazeWallsViews()
@@ -29,7 +32,13 @@ namespace MazeApp.Helpers
                     if (ShouldBeWallBetween(i, j))
                     {
                         var (x1, y1, x2, y2) = GetEndpointsOfWall(i, j);
-                        var wall = new Wall();
+                        var wall = _containerProvider.Resolve<Wall>();
+                        var wallViewModel = _containerProvider.Resolve<WallViewModel>();
+                        wallViewModel.X1 = x1;
+                        wallViewModel.Y1 = y1;
+                        wallViewModel.X2 = x2;
+                        wallViewModel.Y2 = y2;
+                        wall.BindingContext = wallViewModel;
                         walls.Add(wall);
                     }
                 }
