@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeGame.Android", "MazeGame\MazeGame.Android\MazeGame.Android.csproj", "{FB4C4396-1CE2-48AF-8C7B-EC330039BF4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeGame", "MazeGame\MazeGame\MazeGame.csproj", "{62D78B57-BBDE-4BDD-8E53-CA75B2B8FF48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLearning", "MazeGame\QLearning\QLearning.csproj", "{D3089E63-9E1E-4154-BE82-1A83E7A2344D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB4C4396-1CE2-48AF-8C7B-EC330039BF4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4C4396-1CE2-48AF-8C7B-EC330039BF4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4C4396-1CE2-48AF-8C7B-EC330039BF4A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FB4C4396-1CE2-48AF-8C7B-EC330039BF4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4C4396-1CE2-48AF-8C7B-EC330039BF4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB4C4396-1CE2-48AF-8C7B-EC330039BF4A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{62D78B57-BBDE-4BDD-8E53-CA75B2B8FF48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D78B57-BBDE-4BDD-8E53-CA75B2B8FF48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D78B57-BBDE-4BDD-8E53-CA75B2B8FF48}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{62D78B57-BBDE-4BDD-8E53-CA75B2B8FF48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D78B57-BBDE-4BDD-8E53-CA75B2B8FF48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D78B57-BBDE-4BDD-8E53-CA75B2B8FF48}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D3089E63-9E1E-4154-BE82-1A83E7A2344D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3089E63-9E1E-4154-BE82-1A83E7A2344D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3089E63-9E1E-4154-BE82-1A83E7A2344D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3089E63-9E1E-4154-BE82-1A83E7A2344D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {837506CA-DDEE-4CC3-B985-2CDD9C393DA2}
+	EndGlobalSection
+EndGlobal
