@@ -1,8 +1,10 @@
 ﻿using System;
 using Q_Learning;
 using System.Linq;
+using System.Windows.Input;
 using MazeGame.Views;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace MazeGame.ViewModels
 {
@@ -17,6 +19,7 @@ namespace MazeGame.ViewModels
         }
 
         public Grid Content { get; private set; }
+        public ICommand MazeButtonCommand => new Command<string>(MazeButtonClicked);
 
         private Grid GetContent()
         {
@@ -26,13 +29,12 @@ namespace MazeGame.ViewModels
 
             for(int i = 1; i <= mazeModelsCount; i++)
             {
-                var button = new Button()
+                stack.Children.Add(new Button()
                 {
                     Text = $"Maze {i}",
+                    Command = MazeButtonCommand,
                     CommandParameter = i.ToString()
-                };
-                button.Clicked += async (sender, args) => Maze1ButtonClicked(sender, args);
-                stack.Children.Add(button);
+                });
             }
 
             var grid = new Grid();
@@ -41,11 +43,11 @@ namespace MazeGame.ViewModels
             return grid;
         }
         
-        private async void Maze1ButtonClicked(object sender, EventArgs e)
+        private async void MazeButtonClicked(string index)
         {
             await _navigation.PushAsync(new GameBoard
             {
-                BindingContext = new GameBoardViewModel(1)
+                BindingContext = new GameBoardViewModel(int.Parse(index))
             });
         }
     }

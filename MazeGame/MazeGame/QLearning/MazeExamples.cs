@@ -24,7 +24,7 @@ namespace Q_Learning
             maze.Goal = 29;
             maze.QuantityOfColumns = 6;
             maze.QuantityOfRows = 5;
-            maze.SizeOfCell = 40;
+            maze.SizeOfCell = 60;
             maze.Matrix = CreateMatrix();
             maze.Reward = CreateReward();
             maze.Quality = CreateQuality(maze.QuantityOfSquares);

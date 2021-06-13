@@ -46,11 +46,11 @@ namespace MazeGame.ViewModels
 
             var square = new BoxView()
             {
-                MinimumWidthRequest = Width - (canvasPadding * 2),
-                MinimumHeightRequest = Height - (canvasPadding * 2),
+                WidthRequest = Width - (canvasPadding * 2),
+                HeightRequest = Height - (canvasPadding * 2),
                 Margin = new Thickness(TopLeftX + canvasPadding, TopLeftY + canvasPadding, 0, 0),
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Start
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalOptions = LayoutOptions.Start
             };
 
             return square;

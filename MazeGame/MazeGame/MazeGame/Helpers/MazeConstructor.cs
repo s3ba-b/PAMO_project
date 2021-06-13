@@ -28,16 +28,10 @@ namespace MazeGame.Helpers
                     if (ShouldBeWallBetween(i, j))
                     {
                         var (x1, y1, x2, y2) = GetEndpointsOfWall(i, j);
-                        var wall = new Wall();
-                        var wallViewModel = new WallViewModel
+                        walls.Add(new Wall
                         {
-                            X1 = x1,
-                            Y1 = y1,
-                            X2 = x2,
-                            Y2 = y2
-                        };
-                        wall.BindingContext = wallViewModel;
-                        walls.Add(wall);
+                            BindingContext = new WallViewModel(x1, y1, x2, y2)
+                        });
                     }
                 }
             }

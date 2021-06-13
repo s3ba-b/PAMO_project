@@ -1,41 +1,35 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using MazeGame.Helpers;
 using MazeGame.Views;
 using Q_Learning;
-using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
+using static Xamarin.Forms.Application;
 
 namespace MazeGame.ViewModels
 {
     public class GameBoardViewModel
     {
         private readonly MazeViewModel _MazeViewModel;
-        private readonly DisplayInfo _displayInfo;
-        private int _mazeIndex;
         
         public GameBoardViewModel(int mazeIndex)
         {
-            _displayInfo = DeviceDisplay.MainDisplayInfo;
-            _mazeIndex = mazeIndex;
-            _MazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[_mazeIndex]));
+            _MazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]));
             Content = GetContent();
         }
 
         public Grid Content { get; set; }
-        public double Width => _displayInfo.Width;
-        public double Height => _displayInfo.Height;
+        public double Width => Current.MainPage.Width;
+        public double Height => Current.MainPage.Height;
 
         private Grid GetContent()
         {
             var grid = new Grid();
 
+            grid.Children.Add(GetButton());
             grid.Children.Add(new Maze
             {
                 BindingContext = _MazeViewModel
             });
-            grid.Children.Add(GetButton());
 
             return grid;
         }

@@ -68,48 +68,29 @@ namespace MazeGame.ViewModels
             //top border
             borderWalls.Children.Add(new Wall
             {
-                BindingContext = new WallViewModel
-                {
-                    X1 = _Settings.StartXPos,
-                    Y1 = _Settings.StartYPos,
-                    X2 = _Settings.StartXPos + _Settings.MazeWidth - 1,
-                    Y2 = _Settings.StartYPos
-                }
+                BindingContext = new WallViewModel(_Settings.StartXPos, _Settings.StartYPos,
+                    _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos)
             });
 
             //bot border
             borderWalls.Children.Add(new Wall
             {
-                BindingContext = new WallViewModel
-                {
-                    X1 = _Settings.StartXPos,
-                    Y1 = _Settings.StartYPos + _Settings.MazeHeight - 1,
-                    X2 = _Settings.StartXPos + _Settings.MazeWidth - 1,
-                    Y2 = _Settings.StartYPos + _Settings.MazeHeight - 1
-                }
+                BindingContext = new WallViewModel(_Settings.StartXPos, _Settings.StartYPos + _Settings.MazeHeight - 1,
+                    _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos + _Settings.MazeHeight - 1)
             });
 
             //left border
             borderWalls.Children.Add(new Wall
             {
-                BindingContext = new WallViewModel
-                {
-                    X1 = _Settings.StartXPos,
-                    Y1 = _Settings.StartYPos,
-                    X2 = _Settings.StartXPos,
-                    Y2 = _Settings.StartYPos + _Settings.MazeHeight - 1                }
+                BindingContext = new WallViewModel(_Settings.StartXPos, _Settings.StartYPos, 
+                    _Settings.StartXPos, _Settings.StartYPos + _Settings.MazeHeight - 1)
             });
 
             //right border
             borderWalls.Children.Add(new Wall
             {
-                BindingContext = new WallViewModel
-                {
-                    X1 = _Settings.StartXPos + _Settings.MazeWidth - 1,
-                    Y1 = _Settings.StartYPos,
-                    X2 = _Settings.StartXPos + _Settings.MazeWidth - 1,
-                    Y2 = _Settings.StartYPos + _Settings.MazeHeight - 1
-                }
+                BindingContext = new WallViewModel(_Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos, 
+                    _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos + _Settings.MazeHeight - 1)
             });
 
             return borderWalls;
