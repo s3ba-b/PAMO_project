@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Q_Learning;
 using System.Linq;
 using System.Windows.Input;
@@ -25,16 +26,37 @@ namespace MazeGame.ViewModels
         {
             var mazeModelsCount = MazeExamples.GetMazeModels().Count();
 
-            StackLayout stack = new StackLayout();
+            StackLayout stack = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical, 
+                HorizontalOptions = LayoutOptions.Center
+            };
+
 
             for(int i = 1; i <= mazeModelsCount; i++)
             {
-                stack.Children.Add(new Button()
+                var internalStack = new StackLayout()
                 {
-                    Text = $"Maze {i}",
-                    Command = MazeButtonCommand,
-                    CommandParameter = i.ToString()
+                    Orientation = StackOrientation.Horizontal,
+                    Spacing = 50
+                };
+                
+                internalStack.Children.Add(
+                    new Button()
+                    {
+                        Text = $"Maze {i}",
+                        Command = MazeButtonCommand,
+                        CommandParameter = i.ToString(),
+                        WidthRequest = 200
+                    }
+                    );
+                internalStack.Children.Add( new Label()
+                {
+                    Text = "Score 1000",
+                    FontSize = 20,
+                    VerticalTextAlignment = TextAlignment.Center,
                 });
+                stack.Children.Add( internalStack );
             }
 
             var grid = new Grid();
