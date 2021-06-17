@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using System.Windows.Input;
 using MazeGame.Helpers;
 using MazeGame.Views;
 using Q_Learning;
@@ -10,11 +11,14 @@ namespace MazeGame.ViewModels
 {
     public class GameBoardViewModel
     {
-        private readonly MazeViewModel _MazeViewModel;
+        private readonly MazeViewModel _mazeViewModel;
+        private readonly GameplayController _gameplayController;
         
         public GameBoardViewModel(int mazeIndex)
         {
-            _MazeViewModel = new MazeViewModel(GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]));
+            var mazeSettings = GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]);
+            _mazeViewModel = new MazeViewModel(mazeSettings);
+            _gameplayController = new GameplayController(_mazeViewModel);
             Content = GetContent();
         }
 
@@ -28,7 +32,7 @@ namespace MazeGame.ViewModels
             
             grid.Children.Add(new Maze
             {
-                BindingContext = _MazeViewModel
+                BindingContext = _mazeViewModel
             });
             
             grid.Children.Add(GetControls());
@@ -51,7 +55,8 @@ namespace MazeGame.ViewModels
                 Text = "Up",
                 WidthRequest = 50,
                 HeightRequest = 50,
-                Margin = new Thickness(50, 0, 50,0)
+                Margin = new Thickness(50, 0, 50,0),
+                Command = UpButtonCommand
             });
 
             var internalStack = new StackLayout()
@@ -67,13 +72,15 @@ namespace MazeGame.ViewModels
                 Text = "Left",
                 WidthRequest = 50,
                 HeightRequest = 50,
+                Command = LeftButtonCommand
             });
             
             internalStack.Children.Add(new Button()
             {
                 Text = "Right",
                 WidthRequest = 50,
-                HeightRequest = 50
+                HeightRequest = 50,
+                Command = RightButtonCommand
             });
             
             stack.Children.Add(new Button()
@@ -81,11 +88,20 @@ namespace MazeGame.ViewModels
                 Text = "Down",
                 WidthRequest = 50,
                 HeightRequest = 50,
-                Margin = new Thickness(50, 0, 50,0)
+                Margin = new Thickness(50, 0, 50,0),
+                Command = DownButtonCommand
             });
 
             return stack;
         }
+
+        public ICommand DownButtonCommand => new Command(_gameplayController.MoveDownButtonClicked);
+
+        public ICommand RightButtonCommand => new Command(_gameplayController.MoveRightButtonClicked);
+
+        public ICommand LeftButtonCommand => new Command(_gameplayController.MoveLeftButtonClicked);
+
+        public ICommand UpButtonCommand => new Command(_gameplayController.MoveUpButtonClicked);
 
         private MazeSettings GetMazeSettings(MazeModel model) => new MazeSettings
         {
