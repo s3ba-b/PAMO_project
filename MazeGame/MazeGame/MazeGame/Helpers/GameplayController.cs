@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MazeGame.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace MazeGame.Helpers
@@ -79,6 +80,12 @@ namespace MazeGame.Helpers
 
         private void UpdateState()
         { 
+            if (_currentPosition == _mazeSettings.Model.Goal)
+            {
+                Application.Current.MainPage.DisplayAlert("You won.", "Go drink mojito!", "Yep");
+                return;
+            }
+            
             _cells.ForEach(x =>
             {
                 if (x.Id == _mazeSettings.Model.Start || x.Id == _mazeSettings.Model.Goal)
