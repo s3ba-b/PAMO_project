@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,36 +24,68 @@ namespace MazeGame.Helpers
 
         public void MoveUpButtonClicked()
         {
-            _currentPosition -= _mazeSettings.Model.QuantityOfColumns;
-            UpdateCrossedList(_currentPosition);
-            UpdateState();
+            var nextPos = _currentPosition - _mazeSettings.Model.QuantityOfColumns;
+            if (!IsMoveProhibited(_currentPosition, nextPos))
+            {
+                _currentPosition = nextPos;
+                UpdateCrossedList(_currentPosition);
+                UpdateState();
+            }
+            
         }
         
         public void MoveLeftButtonClicked()
         {
-            _currentPosition -= 1;
-            UpdateCrossedList(_currentPosition);
-            UpdateState();
+            var nextPos = _currentPosition - 1;
+            var isBorderOfMaze = false;
+            if (_currentPosition != 0)
+            {
+                isBorderOfMaze = _currentPosition % _mazeSettings.Model.QuantityOfColumns == 0;
+            }
+            if (!(IsMoveProhibited(_currentPosition, nextPos) || isBorderOfMaze))
+            {
+                _currentPosition = nextPos;
+                UpdateCrossedList(_currentPosition);
+                UpdateState();
+            }
         }
         
         public void MoveRightButtonClicked()
         {
-            _currentPosition += 1;
-            UpdateCrossedList(_currentPosition);
-            UpdateState();
+            var nextPos = _currentPosition + 1;
+            var isBorderOfMaze = false;
+            if (_currentPosition != 0)
+            {
+                isBorderOfMaze = _mazeSettings.Model.QuantityOfColumns % _currentPosition == 1;
+            }
+            if (!(IsMoveProhibited(_currentPosition, nextPos) || isBorderOfMaze))
+            {
+                _currentPosition = nextPos;
+                UpdateCrossedList(_currentPosition);
+                UpdateState();
+            }
         }
         
         public void MoveDownButtonClicked()
         {
-            _currentPosition += _mazeSettings.Model.QuantityOfColumns;
-            UpdateCrossedList(_currentPosition);
-            UpdateState();
+            var nextPos = _currentPosition + _mazeSettings.Model.QuantityOfColumns;
+            if (!IsMoveProhibited(_currentPosition, nextPos))
+            {
+                _currentPosition = nextPos;
+                UpdateCrossedList(_currentPosition);
+                UpdateState();
+            }
         }
 
         private void UpdateState()
         { 
             _cells.ForEach(x =>
             {
+                if (x.Id == _mazeSettings.Model.Start || x.Id == _mazeSettings.Model.Goal)
+                {
+                    return;
+                }
+                
                 if (_crossedCells.Contains(x.Id))
                 {
                     x.State = ESquareState.Crossed;
@@ -74,6 +107,15 @@ namespace MazeGame.Helpers
             {
                 _crossedCells.Add(pos);
             }
+        }
+
+        private bool IsMoveProhibited(int currentPos, int nextPos)
+        {
+            if (nextPos < 0 || nextPos > _mazeSettings.Model.QuantityOfSquares - 1)
+            {
+                return true;
+            }
+            return _mazeSettings.Model.Matrix[currentPos][nextPos] == 0;
         }
     }
 }
