@@ -14,6 +14,7 @@ namespace MazeGame.ViewModels
         private readonly INavigation _navigation;
         private readonly MazeViewModel _mazeViewModel;
         private readonly GameplayController _gameplayController;
+        private readonly ScoreCalculator _scoreCalculator;
         
         public GameBoardViewModel(int mazeIndex, INavigation navigation)
         {
@@ -21,6 +22,7 @@ namespace MazeGame.ViewModels
             var mazeSettings = GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]);
             _mazeViewModel = new MazeViewModel(mazeSettings);
             _gameplayController = new GameplayController(_mazeViewModel);
+            _scoreCalculator = new ScoreCalculator();
             Content = GetContent();
         }
 
@@ -107,8 +109,10 @@ namespace MazeGame.ViewModels
 
         private async void ShowWonInfo(bool isGameWon)
         {
+            if(!_scoreCalculator.IsGameStarted) _scoreCalculator.StartGame();
             if (!isGameWon) return;
-            await Current.MainPage.DisplayAlert("You won.", "Go drink mojito!", "Yep");
+            _scoreCalculator.EndGame();
+            await Current.MainPage.DisplayAlert("You won!", $"Your score is {_scoreCalculator.Score}!", "Thanks!");
             await _navigation.PopAsync();
         }
 
