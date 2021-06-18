@@ -69,7 +69,7 @@ namespace MazeGame.ViewModels
         {
             await _navigation.PushAsync(new GameBoard
             {
-                BindingContext = new GameBoardViewModel(int.Parse(index))
+                BindingContext = new GameBoardViewModel(int.Parse(index), _navigation)
             });
         }
     }

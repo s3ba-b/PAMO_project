@@ -11,11 +11,13 @@ namespace MazeGame.ViewModels
 {
     public class GameBoardViewModel
     {
+        private readonly INavigation _navigation;
         private readonly MazeViewModel _mazeViewModel;
         private readonly GameplayController _gameplayController;
         
-        public GameBoardViewModel(int mazeIndex)
+        public GameBoardViewModel(int mazeIndex, INavigation navigation)
         {
+            _navigation = navigation;
             var mazeSettings = GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]);
             _mazeViewModel = new MazeViewModel(mazeSettings);
             _gameplayController = new GameplayController(_mazeViewModel);
@@ -95,13 +97,20 @@ namespace MazeGame.ViewModels
             return stack;
         }
 
-        public ICommand DownButtonCommand => new Command(_gameplayController.MoveDownButtonClicked);
+        public ICommand DownButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveDownButtonClicked()));
 
-        public ICommand RightButtonCommand => new Command(_gameplayController.MoveRightButtonClicked);
+        public ICommand RightButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveRightButtonClicked()));
 
-        public ICommand LeftButtonCommand => new Command(_gameplayController.MoveLeftButtonClicked);
+        public ICommand LeftButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveLeftButtonClicked()));
 
-        public ICommand UpButtonCommand => new Command(_gameplayController.MoveUpButtonClicked);
+        public ICommand UpButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveUpButtonClicked()));
+
+        private async void ShowWonInfo(bool isGameWon)
+        {
+            if (!isGameWon) return;
+            await Current.MainPage.DisplayAlert("You won.", "Go drink mojito!", "Yep");
+            await _navigation.PopAsync();
+        }
 
         private MazeSettings GetMazeSettings(MazeModel model) => new MazeSettings
         {
