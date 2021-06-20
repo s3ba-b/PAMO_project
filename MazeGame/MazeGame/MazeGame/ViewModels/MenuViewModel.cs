@@ -3,6 +3,7 @@ using System.Collections;
 using Q_Learning;
 using System.Linq;
 using System.Windows.Input;
+using MazeGame.Helpers;
 using MazeGame.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,11 +13,17 @@ namespace MazeGame.ViewModels
     public class MenuViewModel
     {
         private readonly INavigation _navigation;
+        private readonly ScoreDb _scoreDb;
 
         public MenuViewModel(INavigation navigation)
         {
             _navigation = navigation;
             Content = GetContent();
+            _scoreDb = new ScoreDb();
+            MessagingCenter.Subscribe<GameBoardViewModel> (this, "Score updated", (sender) =>
+            {
+                UpdateBestScoreForMaze();
+            });
         }
 
         public Grid Content { get; private set; }
@@ -52,7 +59,7 @@ namespace MazeGame.ViewModels
                     );
                 internalStack.Children.Add( new Label()
                 {
-                    Text = "Score 1000",
+                    Text = $"Score {GetBestScoreForMaze(i)}",
                     FontSize = 20,
                     VerticalTextAlignment = TextAlignment.Center,
                 });
@@ -69,8 +76,18 @@ namespace MazeGame.ViewModels
         {
             await _navigation.PushAsync(new GameBoard
             {
-                BindingContext = new GameBoardViewModel(int.Parse(index), _navigation)
+                BindingContext = new GameBoardViewModel(int.Parse(index), _navigation, _scoreDb)
             });
+        }
+
+        private int GetBestScoreForMaze(int index)
+        {
+            return _scoreDb?.Get(index).BestScore ?? 0;
+        }
+
+        private void UpdateBestScoreForMaze()
+        {
+            Content = GetContent();
         }
     }
 }

@@ -15,8 +15,9 @@ namespace MazeGame.ViewModels
         private readonly MazeViewModel _mazeViewModel;
         private readonly GameplayController _gameplayController;
         private readonly ScoreCalculator _scoreCalculator;
+        private readonly ScoreDb _scoreDb;
         
-        public GameBoardViewModel(int mazeIndex, INavigation navigation)
+        public GameBoardViewModel(int mazeIndex, INavigation navigation, ScoreDb scoreDb)
         {
             _navigation = navigation;
             var mazeSettings = GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]);
@@ -24,6 +25,7 @@ namespace MazeGame.ViewModels
             _gameplayController = new GameplayController(_mazeViewModel);
             _scoreCalculator = new ScoreCalculator();
             Content = GetContent();
+            _scoreDb = scoreDb;
         }
 
         public Grid Content { get; set; }
@@ -112,7 +114,20 @@ namespace MazeGame.ViewModels
             if(!_scoreCalculator.IsGameStarted) _scoreCalculator.StartGame();
             if (!isGameWon) return;
             _scoreCalculator.EndGame();
-            await Current.MainPage.DisplayAlert("You won!", $"Your score is {_scoreCalculator.Score}!", "Thanks!");
+            var score = _scoreCalculator.Score;
+            var scoreObj = new Score
+            {
+                MazeId = _mazeViewModel.Settings.Model.Id,
+                BestScore = score
+            };
+            if (_scoreDb.Get(_mazeViewModel.Settings.Model.Id) != null)
+            {
+                _scoreDb.Update(scoreObj);
+            }
+            else
+                _scoreDb.Add(scoreObj); 
+            MessagingCenter.Send<GameBoardViewModel>(this, "Score updated");
+            await Current.MainPage.DisplayAlert("You won!", $"Your score is {score}!", "Thanks!");
             await _navigation.PopAsync();
         }
 
