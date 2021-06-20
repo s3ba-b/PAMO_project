@@ -55,6 +55,26 @@ namespace MazeGame.ViewModels
                 VerticalOptions = LayoutOptions.End,
                 Margin = new Thickness(0, 0, 0, 25)
             };
+
+            var hintStack = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                VerticalOptions = new LayoutOptions()
+            };
+
+            hintStack.Children.Add(new Button()
+            {
+                Text = "Get hint"
+            });
+
+            hintStack.Children.Add(new Label()
+            {
+                Text = "Hints left 3",
+                FontSize = 20,
+                VerticalTextAlignment = TextAlignment.Center,
+            });
+
+        stack.Children.Add(hintStack);
             
             stack.Children.Add(new Button()
             {
@@ -68,7 +88,7 @@ namespace MazeGame.ViewModels
             var internalStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
-                Spacing = 50
+                Spacing = 85
             };
             
             stack.Children.Add(internalStack);

@@ -18,7 +18,7 @@ namespace MazeGame.Helpers
             {
                 var ts = new TimeSpan(0, 2, 0);
                 var time = ts - _stopwatch.Elapsed;
-                return time.Milliseconds * 100;
+                return (int) time.TotalMilliseconds;
             }
         }
 

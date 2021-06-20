@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Q_Learning;
 using System.Linq;
 using System.Windows.Input;
@@ -14,10 +15,12 @@ namespace MazeGame.ViewModels
     {
         private readonly INavigation _navigation;
         private readonly ScoreDb _scoreDb;
+        private readonly List<Label> _labels;
 
         public MenuViewModel(INavigation navigation)
         {
             _navigation = navigation;
+            _labels = new List<Label>();
             Content = GetContent();
             _scoreDb = new ScoreDb();
             MessagingCenter.Subscribe<GameBoardViewModel> (this, "Score updated", (sender) =>
@@ -47,6 +50,13 @@ namespace MazeGame.ViewModels
                     Orientation = StackOrientation.Horizontal,
                     Spacing = 50
                 };
+
+                _labels.Add(new Label()
+                {
+                    Text = $"Score {GetBestScoreForMaze(i)}",
+                    FontSize = 20,
+                    VerticalTextAlignment = TextAlignment.Center,
+                });
                 
                 internalStack.Children.Add(
                     new Button()
@@ -57,12 +67,7 @@ namespace MazeGame.ViewModels
                         WidthRequest = 200
                     }
                     );
-                internalStack.Children.Add( new Label()
-                {
-                    Text = $"Score {GetBestScoreForMaze(i)}",
-                    FontSize = 20,
-                    VerticalTextAlignment = TextAlignment.Center,
-                });
+                internalStack.Children.Add( _labels.Last());
                 stack.Children.Add( internalStack );
             }
 
@@ -82,12 +87,15 @@ namespace MazeGame.ViewModels
 
         private int GetBestScoreForMaze(int index)
         {
-            return _scoreDb?.Get(index).BestScore ?? 0;
+            return _scoreDb?.Get(index)?.BestScore ?? 0;
         }
 
         private void UpdateBestScoreForMaze()
         {
-            Content = GetContent();
+            for (int i = 0; i < _labels.Count; i++)
+            {
+                _labels[i].Text = $"Score {GetBestScoreForMaze(i + 1)}";
+            }
         }
     }
 }
