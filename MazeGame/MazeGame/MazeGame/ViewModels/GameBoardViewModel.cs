@@ -16,6 +16,7 @@ namespace MazeGame.ViewModels
         private readonly GameplayController _gameplayController;
         private readonly ScoreCalculator _scoreCalculator;
         private readonly ScoreDb _scoreDb;
+        private readonly HintsProvider _hintsProvider;
         
         public GameBoardViewModel(int mazeIndex, INavigation navigation, ScoreDb scoreDb)
         {
@@ -24,8 +25,9 @@ namespace MazeGame.ViewModels
             _mazeViewModel = new MazeViewModel(mazeSettings);
             _gameplayController = new GameplayController(_mazeViewModel);
             _scoreCalculator = new ScoreCalculator();
-            Content = GetContent();
+            _hintsProvider = new HintsProvider(_mazeViewModel);
             _scoreDb = scoreDb;
+            Content = GetContent();
         }
 
         public Grid Content { get; set; }
@@ -53,7 +55,9 @@ namespace MazeGame.ViewModels
 
             hintStack.Children.Add(new Button()
             {
-                Text = "Get hint"
+                Text = "Get hint",
+                Command = _hintsProvider.GetHintCommand,
+                CommandParameter = _gameplayController.CurrentPosition.ToString()
             });
 
             hintStack.Children.Add(new Label()

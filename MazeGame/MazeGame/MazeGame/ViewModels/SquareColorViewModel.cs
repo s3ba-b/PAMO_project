@@ -61,7 +61,8 @@ namespace MazeGame.ViewModels
             { ESquareState.Empty, Color.Transparent },
             { ESquareState.Crossed, Color.LightGreen },
             { ESquareState.IsGoal, Color.Red },
-            { ESquareState.IsStart, Color.Green }
+            { ESquareState.IsStart, Color.Green },
+            { ESquareState.IsHint, Color.Fuchsia }
         };
 
     }

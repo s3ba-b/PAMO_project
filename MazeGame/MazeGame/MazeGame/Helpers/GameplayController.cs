@@ -11,24 +11,25 @@ namespace MazeGame.Helpers
     public class GameplayController
     {
         private IEnumerable<CellViewModel> _cells;
-        private int _currentPosition;
         private MazeSettings _mazeSettings;
         private List<int> _crossedCells = new List<int>();
         public GameplayController(MazeViewModel mazeViewModel)
         {
             _cells = mazeViewModel.CellsViewModelsList;
-            _currentPosition = mazeViewModel.Settings.Model.Start;
+            CurrentPosition = mazeViewModel.Settings.Model.Start;
             _mazeSettings = mazeViewModel.Settings;
             _crossedCells.Add(mazeViewModel.Settings.Model.Start);
         }
+        
+        public int CurrentPosition { get; set; }
 
         public bool MoveUpButtonClicked()
         {
-            var nextPos = _currentPosition - _mazeSettings.Model.QuantityOfColumns;
-            if (!IsMoveProhibited(_currentPosition, nextPos))
+            var nextPos = CurrentPosition - _mazeSettings.Model.QuantityOfColumns;
+            if (!IsMoveProhibited(CurrentPosition, nextPos))
             {
-                _currentPosition = nextPos;
-                UpdateCrossedList(_currentPosition);
+                CurrentPosition = nextPos;
+                UpdateCrossedList(CurrentPosition);
                 return UpdateState();
             }
 
@@ -37,15 +38,15 @@ namespace MazeGame.Helpers
         
         public bool MoveLeftButtonClicked()
         {
-            var nextPos = _currentPosition - 1;
+            var nextPos = CurrentPosition - 1;
             var isBorderOfMaze = false;
-            if (_currentPosition != 0)
+            if (CurrentPosition != 0)
             {
-                isBorderOfMaze = _currentPosition % _mazeSettings.Model.QuantityOfColumns == 0;
-            } if (!(IsMoveProhibited(_currentPosition, nextPos) || isBorderOfMaze))
+                isBorderOfMaze = CurrentPosition % _mazeSettings.Model.QuantityOfColumns == 0;
+            } if (!(IsMoveProhibited(CurrentPosition, nextPos) || isBorderOfMaze))
             {
-                _currentPosition = nextPos;
-                UpdateCrossedList(_currentPosition);
+                CurrentPosition = nextPos;
+                UpdateCrossedList(CurrentPosition);
                 return UpdateState();
             }
 
@@ -54,16 +55,16 @@ namespace MazeGame.Helpers
         
         public bool MoveRightButtonClicked()
         {
-            var nextPos = _currentPosition + 1;
+            var nextPos = CurrentPosition + 1;
             var isBorderOfMaze = false;
-            if (_currentPosition != 0)
+            if (CurrentPosition != 0)
             {
-                isBorderOfMaze = _mazeSettings.Model.QuantityOfColumns % _currentPosition == 1;
+                isBorderOfMaze = _mazeSettings.Model.QuantityOfColumns % CurrentPosition == 1;
             }
-            if (!(IsMoveProhibited(_currentPosition, nextPos) || isBorderOfMaze))
+            if (!(IsMoveProhibited(CurrentPosition, nextPos) || isBorderOfMaze))
             {
-                _currentPosition = nextPos;
-                UpdateCrossedList(_currentPosition);
+                CurrentPosition = nextPos;
+                UpdateCrossedList(CurrentPosition);
                 return UpdateState();
             }
 
@@ -72,11 +73,11 @@ namespace MazeGame.Helpers
         
         public bool MoveDownButtonClicked()
         {
-            var nextPos = _currentPosition + _mazeSettings.Model.QuantityOfColumns;
-            if (!IsMoveProhibited(_currentPosition, nextPos))
+            var nextPos = CurrentPosition + _mazeSettings.Model.QuantityOfColumns;
+            if (!IsMoveProhibited(CurrentPosition, nextPos))
             {
-                _currentPosition = nextPos;
-                UpdateCrossedList(_currentPosition);
+                CurrentPosition = nextPos;
+                UpdateCrossedList(CurrentPosition);
                 return UpdateState();
             }
 
@@ -85,7 +86,7 @@ namespace MazeGame.Helpers
 
         private bool UpdateState()
         { 
-            if (_currentPosition == _mazeSettings.Model.Goal)
+            if (CurrentPosition == _mazeSettings.Model.Goal)
             {
                 return true;
             }
