@@ -42,24 +42,13 @@ namespace MazeGame.ViewModels
             });
             
             grid.Children.Add(GetControls());
-
-            return grid;
-        }
-
-        private StackLayout GetControls()
-        {
-            var stack = new StackLayout()
-            {
-                Orientation = StackOrientation.Vertical,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.End,
-                Margin = new Thickness(0, 0, 0, 25)
-            };
-
+            
             var hintStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
-                VerticalOptions = new LayoutOptions()
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.End,
+                Margin = new Thickness(10, 0, 0, 10)
             };
 
             hintStack.Children.Add(new Button()
@@ -74,8 +63,23 @@ namespace MazeGame.ViewModels
                 VerticalTextAlignment = TextAlignment.Center,
             });
 
-        stack.Children.Add(hintStack);
+            // stack.Children.Add(hintStack);
             
+            grid.Children.Add(hintStack);
+
+            return grid;
+        }
+
+        private StackLayout GetControls()
+        {
+            var stack = new StackLayout()
+            {
+                Orientation = StackOrientation.Vertical,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.End,
+                Margin = new Thickness(0, 0, 0, 70)
+            };
+
             stack.Children.Add(new Button()
             {
                 Text = "Up",
@@ -88,7 +92,7 @@ namespace MazeGame.ViewModels
             var internalStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
-                Spacing = 85
+                Spacing = 50
             };
             
             stack.Children.Add(internalStack);
