@@ -68,6 +68,13 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable\background.jpg" />
+    <AndroidResource Include="Resources\drawable\settings_button_1.png" />
+    <AndroidResource Include="Resources\drawable\settings_button_2.png" />
+    <AndroidResource Include="Resources\drawable\start_button_1.png" />
+    <AndroidResource Include="Resources\drawable\start_button_2.png" />
+    <AndroidResource Include="Resources\drawable\title.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\settings_button_1.png" />
     <AndroidResource Include="Resources\values\styles.xml" />
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\mipmap-anydpi-v26\icon.xml" />

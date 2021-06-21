@@ -1,4 +1,5 @@
 ﻿using MazeGame.ViewModels;
+using Xamarin.Forms;
 
 namespace MazeGame.Views
 {
@@ -8,6 +9,7 @@ namespace MazeGame.Views
         {
             InitializeComponent();
             BindingContext = new MenuViewModel(Navigation);
+            NavigationPage.SetHasNavigationBar(this, false);
         }
     }
 }
