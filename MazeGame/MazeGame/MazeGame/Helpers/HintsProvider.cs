@@ -14,14 +14,17 @@ namespace MazeGame.Helpers
         private readonly MazeViewModel _mazeViewModel;
         private readonly List<int> _qLearningPath;
         private readonly GameplayController _gameplayController;
+        private List<int> _crossedCells;
+        
         public HintsProvider(MazeViewModel mazeViewModel, GameplayController gameplayController)
         {
             _mazeViewModel = mazeViewModel;
             var intelligence = new Intelligence(_mazeViewModel.Settings.Model);
-            _qLearningPath = intelligence.GetMoves().ToList();
+            _qLearningPath = gameplayController.QLearningPath;
             _gameplayController = gameplayController;
+            _crossedCells = gameplayController.CrossedCells;
         }
-
+        
         public ICommand GetHintCommand => new Command(GetHint);
 
         private void GetHint()
@@ -39,6 +42,11 @@ namespace MazeGame.Helpers
                     cell.State = ESquareState.IsHint;
                 }
             });
+        }
+
+        private List<int> GetPathDescent()
+        {
+            return _crossedCells.Except(_qLearningPath).ToList();
         }
     }
 }

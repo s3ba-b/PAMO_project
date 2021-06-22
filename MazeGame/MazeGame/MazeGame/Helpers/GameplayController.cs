@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MazeGame.ViewModels;
+using Q_Learning;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -12,16 +13,20 @@ namespace MazeGame.Helpers
     {
         private IEnumerable<CellViewModel> _cells;
         private MazeSettings _mazeSettings;
-        private List<int> _crossedCells = new List<int>();
+        
         public GameplayController(MazeViewModel mazeViewModel)
         {
             _cells = mazeViewModel.CellsViewModelsList;
             CurrentPosition = mazeViewModel.Settings.Model.Start;
             _mazeSettings = mazeViewModel.Settings;
-            _crossedCells.Add(mazeViewModel.Settings.Model.Start);
+            CrossedCells.Add(mazeViewModel.Settings.Model.Start);
+            var intelligence = new Intelligence(mazeViewModel.Settings.Model);
+            QLearningPath = intelligence.GetMoves().ToList();
         }
         
         public int CurrentPosition { get; set; }
+        public List<int> QLearningPath { get; set; }
+        public List<int> CrossedCells = new List<int>();
 
         public bool MoveUpButtonClicked()
         {
@@ -98,7 +103,7 @@ namespace MazeGame.Helpers
                     return;
                 }
                 
-                if (_crossedCells.Contains(x.Id))
+                if (CrossedCells.Contains(x.Id))
                 {
                     x.State = ESquareState.Crossed;
                 }
@@ -113,13 +118,13 @@ namespace MazeGame.Helpers
 
         private void UpdateCrossedList(int pos)
         {
-            if (_crossedCells.Contains(pos))
+            if (CrossedCells.Contains(pos))
             {
-                _crossedCells.RemoveAt(_crossedCells.Count - 1);
+                CrossedCells.RemoveAt(CrossedCells.Count - 1);
             }
             else
             {
-                _crossedCells.Add(pos);
+                CrossedCells.Add(pos);
             }
         }
 
