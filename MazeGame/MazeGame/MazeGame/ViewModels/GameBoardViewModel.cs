@@ -25,7 +25,7 @@ namespace MazeGame.ViewModels
             _mazeViewModel = new MazeViewModel(mazeSettings);
             _gameplayController = new GameplayController(_mazeViewModel);
             _scoreCalculator = new ScoreCalculator();
-            _hintsProvider = new HintsProvider(_mazeViewModel);
+            _hintsProvider = new HintsProvider(_mazeViewModel, _gameplayController);
             _scoreDb = scoreDb;
             Content = GetContent();
         }
@@ -56,8 +56,7 @@ namespace MazeGame.ViewModels
             hintStack.Children.Add(new Button()
             {
                 Text = "Get hint",
-                Command = _hintsProvider.GetHintCommand,
-                CommandParameter = _gameplayController.CurrentPosition.ToString()
+                Command = _hintsProvider.GetHintCommand
             });
 
             hintStack.Children.Add(new Label()

@@ -13,19 +13,21 @@ namespace MazeGame.Helpers
     {
         private readonly MazeViewModel _mazeViewModel;
         private readonly List<int> _qLearningPath;
-        public HintsProvider(MazeViewModel mazeViewModel)
+        private readonly GameplayController _gameplayController;
+        public HintsProvider(MazeViewModel mazeViewModel, GameplayController gameplayController)
         {
             _mazeViewModel = mazeViewModel;
             var intelligence = new Intelligence(_mazeViewModel.Settings.Model);
             _qLearningPath = intelligence.GetMoves().ToList();
+            _gameplayController = gameplayController;
         }
 
-        public ICommand GetHintCommand => new Command<string>(GetHint);
+        public ICommand GetHintCommand => new Command(GetHint);
 
-        private void GetHint(string index)
+        private void GetHint()
         {
             var hintsIds = new List<int>();
-            var currentStepInPath = _qLearningPath.FindIndex(x => x.Equals(int.Parse(index)));
+            var currentStepInPath = _qLearningPath.FindIndex(x => x.Equals(_gameplayController.CurrentPosition));
             for (int i = currentStepInPath + 1; i < currentStepInPath + 4; i++)
             {
                 hintsIds.Add(_qLearningPath[i]);
