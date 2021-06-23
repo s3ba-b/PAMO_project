@@ -17,6 +17,8 @@ namespace MazeGame.ViewModels
         private readonly ScoreCalculator _scoreCalculator;
         private readonly ScoreDb _scoreDb;
         private readonly HintsProvider _hintsProvider;
+        private Button _getHintsButton;
+        private Label _hintsLeftLabel;
         
         public GameBoardViewModel(int mazeIndex, INavigation navigation, ScoreDb scoreDb)
         {
@@ -27,6 +29,21 @@ namespace MazeGame.ViewModels
             _scoreCalculator = new ScoreCalculator();
             _hintsProvider = new HintsProvider(_mazeViewModel, _gameplayController);
             _scoreDb = scoreDb;
+            _getHintsButton = new Button()
+            {
+                Text = "Get hint",
+                Command = _hintsProvider.GetHintCommand
+            };
+            _hintsLeftLabel = new Label()
+            {
+                Text = $"Hints left {GetRemainingHintsNumber()}",
+                FontSize = 20,
+                VerticalTextAlignment = TextAlignment.Center,
+            };
+            MessagingCenter.Subscribe<HintsProvider> (this, "Hints left updated", (sender) =>
+            {
+                UpdateRemainingHintsNumber();
+            });
             Content = GetContent();
         }
 
@@ -53,24 +70,28 @@ namespace MazeGame.ViewModels
                 Margin = new Thickness(10, 0, 0, 10)
             };
 
-            hintStack.Children.Add(new Button()
-            {
-                Text = "Get hint",
-                Command = _hintsProvider.GetHintCommand
-            });
+            hintStack.Children.Add(_getHintsButton);
 
-            hintStack.Children.Add(new Label()
-            {
-                Text = "Hints left 3",
-                FontSize = 20,
-                VerticalTextAlignment = TextAlignment.Center,
-            });
+            hintStack.Children.Add(_hintsLeftLabel);
 
-            // stack.Children.Add(hintStack);
-            
             grid.Children.Add(hintStack);
 
             return grid;
+        }
+
+        private int GetRemainingHintsNumber()
+        {
+            return _hintsProvider.HintsLeft;
+        }
+        
+        private void UpdateRemainingHintsNumber()
+        {
+            var remainingHints = GetRemainingHintsNumber();
+            if (remainingHints == 0)
+            {
+                _getHintsButton.IsEnabled = false;
+            }
+            _hintsLeftLabel.Text = $"Hints left {remainingHints}";
         }
 
         private StackLayout GetControls()

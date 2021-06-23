@@ -23,30 +23,66 @@ namespace MazeGame.Helpers
             _qLearningPath = gameplayController.QLearningPath;
             _gameplayController = gameplayController;
             _crossedCells = gameplayController.CrossedCells;
+            HintsLeft = 3;
         }
         
         public ICommand GetHintCommand => new Command(GetHint);
+        
+        
+        public int HintsLeft { get; private set; }
 
         private void GetHint()
         {
-            var hintsIds = new List<int>();
-            var currentStepInPath = _qLearningPath.FindIndex(x => x.Equals(_gameplayController.CurrentPosition));
-            for (int i = currentStepInPath + 1; i < currentStepInPath + 4; i++)
+            if (HintsLeft != 0)
             {
-                hintsIds.Add(_qLearningPath[i]);
-            }
-            _mazeViewModel.CellsViewModelsList.ForEach(cell =>
-            {
-                if (hintsIds.Contains(cell.Id))
+                var hintsIds = GetPathDescent();
+                // var currentStepInPath = _qLearningPath.FindIndex(x => x.Equals(_gameplayController.CurrentPosition));
+            
+                _mazeViewModel.CellsViewModelsList.ForEach(cell =>
                 {
-                    cell.State = ESquareState.IsHint;
-                }
-            });
+                    if (hintsIds.Contains(cell.Id))
+                    {
+                        cell.State = ESquareState.IsHint;
+                    }
+                });
+
+                HintsLeft -= 1;
+                MessagingCenter.Send<HintsProvider>(this, "Hints left updated");
+            }
         }
 
-        private List<int> GetPathDescent()
+        private IEnumerable<int> GetPathDescent()
         {
-            return _crossedCells.Except(_qLearningPath).ToList();
+
+            var pathDescent = _crossedCells.Except(_qLearningPath);
+            if (pathDescent.Count() == 0)
+            {
+                return _qLearningPath.Except(_crossedCells).Take(3);
+            }
+            
+            if (pathDescent.Count() >= 3)
+            {
+                pathDescent.Reverse();
+                return pathDescent.Take(3);
+            }
+            
+            if (pathDescent.Count() > 0 && pathDescent.Count() < 3)
+            {
+                var cellsFromGoodPath = 3 - pathDescent.Count();
+                var path = new List<int>();
+                path.AddRange(pathDescent);
+                var goodPath = _crossedCells.Except(pathDescent);
+                path.Add(goodPath.Last());
+
+                if (path.Count() < 3)
+                {
+                    path.Add(_qLearningPath.Except(_crossedCells).First());
+                }
+
+                return path;
+            }
+
+            return null;
         }
     }
 }
