@@ -5,6 +5,7 @@
         Empty,
         Crossed,
         IsStart,
-        IsGoal
+        IsGoal,
+        IsHint
     }
 }

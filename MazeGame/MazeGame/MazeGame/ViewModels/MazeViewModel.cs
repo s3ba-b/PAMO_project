@@ -9,20 +9,21 @@ namespace MazeGame.ViewModels
 {
     public class MazeViewModel
     {
-        private MazeSettings _Settings;
         private MazeConstructor _Constructor;
-        private IEnumerable<CellViewModel> _CellsViewModelsList;
 
         public MazeViewModel(MazeSettings settings)
         {
-            _Settings = settings;
+            Settings = settings;
             _Constructor = new MazeConstructor(settings);
-            _CellsViewModelsList = GetCellsViewModelsList();
+            CellsViewModelsList = GetCellsViewModelsList();
 
             Content = GetMazeVisualization();
         }
 
         public Grid Content { get; set; }
+        
+        public IEnumerable<CellViewModel> CellsViewModelsList { get; set; }
+        public MazeSettings Settings { get; set; }
 
         private Grid GetMazeVisualization()
         {
@@ -37,14 +38,14 @@ namespace MazeGame.ViewModels
 
         public void VisualizeWalk()
         {
-            var intelligence = new Intelligence(_Settings.Model);
+            var intelligence = new Intelligence(Settings.Model);
             var moves = intelligence.GetMoves();
             moves = moves.Skip(1);
             moves = moves.Take(moves.Count() - 1);
 
             foreach (var move in moves)
             {
-                _CellsViewModelsList.Where(cell => cell.Id == move).First().State = ESquareState.Crossed;
+                CellsViewModelsList.Where(cell => cell.Id == move).First().State = ESquareState.Crossed;
             }
         }
 
@@ -68,29 +69,29 @@ namespace MazeGame.ViewModels
             //top border
             borderWalls.Children.Add(new Wall
             {
-                BindingContext = new WallViewModel(_Settings.StartXPos, _Settings.StartYPos,
-                    _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos)
+                BindingContext = new WallViewModel(Settings.StartXPos, Settings.StartYPos,
+                    Settings.StartXPos + Settings.MazeWidth - 1, Settings.StartYPos)
             });
 
             //bot border
             borderWalls.Children.Add(new Wall
             {
-                BindingContext = new WallViewModel(_Settings.StartXPos, _Settings.StartYPos + _Settings.MazeHeight - 1,
-                    _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos + _Settings.MazeHeight - 1)
+                BindingContext = new WallViewModel(Settings.StartXPos, Settings.StartYPos + Settings.MazeHeight - 1,
+                    Settings.StartXPos + Settings.MazeWidth - 1, Settings.StartYPos + Settings.MazeHeight - 1)
             });
 
             //left border
             borderWalls.Children.Add(new Wall
             {
-                BindingContext = new WallViewModel(_Settings.StartXPos, _Settings.StartYPos, 
-                    _Settings.StartXPos, _Settings.StartYPos + _Settings.MazeHeight - 1)
+                BindingContext = new WallViewModel(Settings.StartXPos, Settings.StartYPos, 
+                    Settings.StartXPos, Settings.StartYPos + Settings.MazeHeight - 1)
             });
 
             //right border
             borderWalls.Children.Add(new Wall
             {
-                BindingContext = new WallViewModel(_Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos, 
-                    _Settings.StartXPos + _Settings.MazeWidth - 1, _Settings.StartYPos + _Settings.MazeHeight - 1)
+                BindingContext = new WallViewModel(Settings.StartXPos + Settings.MazeWidth - 1, Settings.StartYPos, 
+                    Settings.StartXPos + Settings.MazeWidth - 1, Settings.StartYPos + Settings.MazeHeight - 1)
             });
 
             return borderWalls;
@@ -100,10 +101,10 @@ namespace MazeGame.ViewModels
         {
             var lattice = new Grid();
 
-            _CellsViewModelsList.Where(v => v.Id == _Settings.Model.Start).FirstOrDefault().State = ESquareState.IsStart;
-            _CellsViewModelsList.Where(v => v.Id == _Settings.Model.Goal).FirstOrDefault().State = ESquareState.IsGoal;
+            CellsViewModelsList.Where(v => v.Id == Settings.Model.Start).FirstOrDefault().State = ESquareState.IsStart;
+            CellsViewModelsList.Where(v => v.Id == Settings.Model.Goal).FirstOrDefault().State = ESquareState.IsGoal;
 
-            foreach (var cellViewModel in _CellsViewModelsList)
+            foreach (var cellViewModel in CellsViewModelsList)
             {
                 lattice.Children.Add(new Views.Cell { BindingContext = cellViewModel });
             }
@@ -114,22 +115,22 @@ namespace MazeGame.ViewModels
         private IEnumerable<CellViewModel> GetCellsViewModelsList()
         {
             var cellsViewModels = new List<CellViewModel>();
-            var currentX = _Settings.StartXPos;
-            var currentY = _Settings.StartYPos;
+            var currentX = Settings.StartXPos;
+            var currentY = Settings.StartYPos;
             int cellId = 0;
 
-            for (int rowNumber = 1; rowNumber <= _Settings.Model.QuantityOfRows; rowNumber++)
+            for (int rowNumber = 1; rowNumber <= Settings.Model.QuantityOfRows; rowNumber++)
             {
-                for (int columnNumber = 1; columnNumber <= _Settings.Model.QuantityOfColumns; columnNumber++)
+                for (int columnNumber = 1; columnNumber <= Settings.Model.QuantityOfColumns; columnNumber++)
                 {
-                    var cellViewModel = new CellViewModel(cellId, currentX, currentY, _Settings.Model.SizeOfCell);
+                    var cellViewModel = new CellViewModel(cellId, currentX, currentY, Settings.Model.SizeOfCell);
                     cellsViewModels.Add(cellViewModel);
                     cellId++;
-                    currentX += _Settings.Model.SizeOfCell;
+                    currentX += Settings.Model.SizeOfCell;
                 }
 
-                currentY += _Settings.Model.SizeOfCell;
-                currentX = _Settings.StartXPos;
+                currentY += Settings.Model.SizeOfCell;
+                currentX = Settings.StartXPos;
             }
 
             return cellsViewModels;
