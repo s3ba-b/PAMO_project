@@ -12,29 +12,31 @@ namespace MazeGame.ViewModels
     {
         private readonly INavigation _navigation;
 
+        private String name { get; set;}
         public MenuViewModel(INavigation navigation)
         {
             _navigation = navigation;
+            this.name = "Enter your name";
             Content = GetContent();
         }
 
         public Grid Content { get; private set; }
         public ICommand StartButtonCommand => new Command(StartButtonClicked);
 
+        /**
+         * 
+         */
         private Grid GetContent()
         {
             
-
-            
+            // Graphic with the application title.
             var titleImage = new Image()
             {
                 Source = ImageSource.FromFile(file: "title.png"),
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions  = LayoutOptions.Center,
                 HeightRequest = 250,
-
             };
-            var mazeModelsCount = MazeExamples.GetMazeModels().Count();
             
             // Button to change settings.
             var settingsButton = new ImageButton()
@@ -43,7 +45,6 @@ namespace MazeGame.ViewModels
                 BackgroundColor = Color.Transparent,
                 HorizontalOptions = LayoutOptions.Center,
                 HeightRequest = 40,
-
             };
 
             // Event that changes "settingsButton" graphic when the button is released.  
@@ -79,28 +80,68 @@ namespace MazeGame.ViewModels
             startGameButton.Pressed += (object sender, EventArgs e) =>
             {
                 startGameButton.Source = ImageSource.FromFile(file: "start_button_2.png");
-            };  
+            };
 
-            StackLayout nameStack = new StackLayout()
+            var nameLabel = new Label
             {
-                //Orientation = StackOrientation.Horizontal,
-                Orientation = StackOrientation.Vertical,
-                //HorizontalOptions = LayoutOptions.Center,
-                Children = {
-                    new Label {
-                        Text = "Enter your name",
-                        TextColor = Color.White,
-                        FontAttributes = FontAttributes.Bold,
-                    },
-                    settingsButton
-                }
+                Text = this.name,
+                TextColor = Color.White,
+                FontAttributes = FontAttributes.Bold,
             };
             
 
-            var grid = new Grid();
-            grid.Children.Add(nameStack);
+            var grid = new Grid
+            {
+                RowDefinitions =
+                {
+                    new RowDefinition(),
+                    new RowDefinition(),
+
+                    new RowDefinition(),
+                    new RowDefinition(),
+                    new RowDefinition(),
+                    
+                    new RowDefinition(),
+                    new RowDefinition(),
+
+                },
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition(),
+                    new ColumnDefinition(),
+                    new ColumnDefinition(),
+                }
+                
+            };
+            Grid.SetRow(nameLabel,1);
+            Grid.SetColumn(nameLabel,1);
+            grid.Children.Add(nameLabel);
+            
+            Grid.SetRow(settingsButton,1);
+            Grid.SetColumn(settingsButton,2);
+            grid.Children.Add(settingsButton);
+
+            Grid.SetRow(titleImage,3);
+            Grid.SetColumn(titleImage,1);
+            grid.Children.Add(titleImage);
+
+            Grid.SetRow(startGameButton,5);
+            Grid.SetColumn(startGameButton,1);
+            grid.Children.Add(startGameButton);
+
+            
+            /*
+            grid.Children.Add(settingsButton);
             grid.Children.Add(titleImage);
             grid.Children.Add(startGameButton);
+            */
+
+            /*
+            grid.Children.Add(nameLabel, 0,1,0,0);
+            grid.Children.Add(settingsButton, 2,2, 0,0);
+            grid.Children.Add(titleImage, 0, 0, 1, 1);
+            grid.Children.Add(startGameButton, 0, 0, 2,2);
+            */
 
             return grid;
         }
