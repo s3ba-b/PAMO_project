@@ -1,10 +1,15 @@
 ﻿using System;
 using Q_Learning;
 using System.Linq;
+using System.Resources;
 using System.Windows.Input;
 using MazeGame.Views;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms.Xaml;
+using ResourceManager = System.Resources.ResourceManager;
+
+[assembly: NeutralResourcesLanguage("en-US")]
 
 namespace MazeGame.ViewModels
 {
@@ -17,6 +22,7 @@ namespace MazeGame.ViewModels
         {
             _navigation = navigation;
             this.name = "Enter your name";
+            //this.name = Application.Context.Resources.GetString(Resource.String.labelEnterName);
             Content = GetContent();
         }
 
