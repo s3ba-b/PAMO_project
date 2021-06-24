@@ -6,7 +6,12 @@ using System.Collections.Generic;
 
 namespace MazeGame.Helpers
 {
-    public class MazeConstructor
+    public interface IMazeConstructor
+    {
+        IEnumerable<Wall> GetMazeWallsViews();
+    }
+    
+    public class MazeConstructor : IMazeConstructor
     {
         private readonly MazeSettings _Settings;
         private readonly MazeModel _Maze;

@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using MazeGame.Helpers;
 using MazeGame.Views;
 using Q_Learning;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using static Xamarin.Forms.Application;
 
 namespace MazeGame.ViewModels
@@ -18,22 +18,33 @@ namespace MazeGame.ViewModels
         private readonly ScoreDb _scoreDb;
         private Button _getHintsButton;
         private Label _hintsLeftLabel;
+        private int _hintsLeft;
 
         public GameBoardViewModel(int mazeIndex, INavigation navigation, ScoreDb scoreDb)
         {
-            _navigation = navigation;
             var mazeSettings = GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]);
+            _navigation = navigation;
+            _hintsLeft = GameplayConsts.START_AMOUNT_OF_HINTS;
             _mazeViewModel = new MazeViewModel(mazeSettings);
             _scoreCalculator = new ScoreCalculator();
             _scoreDb = scoreDb;
+            _gameplayController = new GameplayController(_mazeViewModel);
             Content = GetContent();
-            _gameplayController = new GameplayController(_mazeViewModel, _getHintsButton, _hintsLeftLabel);
-            _getHintsButton.Command = GetHintCommand;
         }
 
         public Grid Content { get; set; }
         public double Width => Current.MainPage.Width;
         public double Height => Current.MainPage.Height;
+        
+        public ICommand DownButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveDown()));
+
+        public ICommand RightButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveRight()));
+
+        public ICommand LeftButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveLeft()));
+
+        public ICommand UpButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveUp()));
+        
+        public ICommand GetHintCommand => new Command(GetHintClicked);
 
         private Grid GetContent()
         {
@@ -56,7 +67,8 @@ namespace MazeGame.ViewModels
             
             _getHintsButton = new Button()
             {
-                Text = "Get hint"
+                Text = "Get hint",
+                Command = GetHintCommand
             };
             
             _hintsLeftLabel = new Label()
@@ -129,16 +141,34 @@ namespace MazeGame.ViewModels
 
             return stack;
         }
-
-        public ICommand DownButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveDownButtonClicked()));
-
-        public ICommand RightButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveRightButtonClicked()));
-
-        public ICommand LeftButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveLeftButtonClicked()));
-
-        public ICommand UpButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveUpButtonClicked()));
         
-        public ICommand GetHintCommand => new Command(_gameplayController.GetHintClicked);
+        private void UpdateRemainingHintsNumber()
+        {
+            if (_hintsLeft == 0)
+            {
+                _getHintsButton.IsEnabled = false;
+            }
+            _hintsLeftLabel.Text = $"Hints left {_hintsLeft}";
+        }
+
+        public void GetHintClicked()
+        {
+            if (_hintsLeft == 0) return;
+            
+            var hintsProvider = new HintsProvider(_gameplayController.CrossedCells, _mazeViewModel.Settings.Model);
+            var hintsIds = hintsProvider.GetHintCellsIndexes();
+            
+            _mazeViewModel.CellsViewModelsList.ForEach(cell =>
+            {
+                if (hintsIds.Contains(cell.Id))
+                {
+                    cell.State = ESquareState.IsHint;
+                }
+            });
+
+            _hintsLeft -= 1;
+            UpdateRemainingHintsNumber();
+        }
 
         private async void ShowWonInfo(bool isGameWon)
         {

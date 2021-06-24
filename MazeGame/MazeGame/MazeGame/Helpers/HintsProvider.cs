@@ -1,15 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
-using MazeGame.ViewModels;
 using Q_Learning;
-using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace MazeGame.Helpers
 {
-    public class HintsProvider
+    public interface IHintsProvider
+    {
+        IEnumerable<int> GetHintCellsIndexes();
+    }
+    
+    public class HintsProvider : IHintsProvider
     {
         private readonly IEnumerable<int> _qLearningPath;
         private readonly IEnumerable<int> _crossedCells;
@@ -20,17 +20,11 @@ namespace MazeGame.Helpers
             _qLearningPath = GetQLearningPath(model);
         }
 
-        private static IEnumerable<int> GetQLearningPath(MazeModel model)
-        {
-            var intelligence = new Intelligence(model);
-            return intelligence.GetMoves();
-        }
-
         public IEnumerable<int> GetHintCellsIndexes()
         {
-
-            var pathDescent = _crossedCells.Except(_qLearningPath);
-            if (pathDescent.Count() == 0)
+            var pathDescent = _crossedCells.Except(_qLearningPath).ToList();
+            
+            if (!pathDescent.Any())
             {
                 return _qLearningPath.Except(_crossedCells).Take(3);
             }
@@ -40,24 +34,26 @@ namespace MazeGame.Helpers
                 pathDescent.Reverse();
                 return pathDescent.Take(3);
             }
+
+            if (!pathDescent.Any() || pathDescent.Count() >= 3) return null;
             
-            if (pathDescent.Count() > 0 && pathDescent.Count() < 3)
+            var path = new List<int>();
+            path.AddRange(pathDescent);
+            var goodPath = _crossedCells.Except(pathDescent);
+            path.Add(goodPath.Last());
+
+            if (path.Count() < 3)
             {
-                var cellsFromGoodPath = 3 - pathDescent.Count();
-                var path = new List<int>();
-                path.AddRange(pathDescent);
-                var goodPath = _crossedCells.Except(pathDescent);
-                path.Add(goodPath.Last());
-
-                if (path.Count() < 3)
-                {
-                    path.Add(_qLearningPath.Except(_crossedCells).First());
-                }
-
-                return path;
+                path.Add(_qLearningPath.Except(_crossedCells).First());
             }
 
-            return null;
+            return path;
+        }
+        
+        private static IEnumerable<int> GetQLearningPath(MazeModel model)
+        {
+            var intelligence = new Intelligence(model);
+            return intelligence.GetMoves();
         }
     }
 }
