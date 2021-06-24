@@ -68,7 +68,7 @@ namespace MazeGame.ViewModels
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Center,
-                HeightRequest = 40,
+                HeightRequest = 50,
                 Command = StartButtonCommand,
             };
             
@@ -91,6 +91,7 @@ namespace MazeGame.ViewModels
                 FontAttributes = FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.Start,
                 VerticalOptions  = LayoutOptions.Center,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             };
 
             var nameStackLayout = new StackLayout
@@ -110,6 +111,7 @@ namespace MazeGame.ViewModels
             var stackLayout = new StackLayout
             {
                 Margin = 30,
+                Spacing = 120,
 
                 Children =
                 {
