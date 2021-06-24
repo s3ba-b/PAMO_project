@@ -1,6 +1,7 @@
 ﻿using MazeGame.ViewModels;
 using Xamarin.Forms;
 
+
 namespace MazeGame.Views
 {
     public partial class Menu

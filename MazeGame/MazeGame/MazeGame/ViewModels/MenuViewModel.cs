@@ -3,6 +3,7 @@ using Q_Learning;
 using System.Linq;
 using System.Resources;
 using System.Windows.Input;
+using MazeGame.Helpers;
 using MazeGame.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -21,8 +22,8 @@ namespace MazeGame.ViewModels
         public MenuViewModel(INavigation navigation)
         {
             _navigation = navigation;
-            this.name = "Enter your name";
-            //this.name = Application.Context.Resources.GetString(Resource.String.labelEnterName);
+            this.name = StringConsts.LABEL_ENTER_NAME ;
+
             Content = GetContent();
         }
 
