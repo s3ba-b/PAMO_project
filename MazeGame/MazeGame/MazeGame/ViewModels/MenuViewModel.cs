@@ -20,13 +20,13 @@ namespace MazeGame.ViewModels
             Content = GetContent();
         }
 
-        public Grid Content { get; private set; }
+        public StackLayout Content { get; private set; }
         public ICommand StartButtonCommand => new Command(StartButtonClicked);
 
         /**
          * 
          */
-        private Grid GetContent()
+        private StackLayout GetContent()
         {
             
             // Graphic with the application title.
@@ -43,7 +43,8 @@ namespace MazeGame.ViewModels
             {
                 Source = ImageSource.FromFile(file: "settings_button_1.png"),
                 BackgroundColor = Color.Transparent,
-                HorizontalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions  = LayoutOptions.Center,
                 HeightRequest = 40,
             };
 
@@ -65,6 +66,7 @@ namespace MazeGame.ViewModels
             {
                 Source = ImageSource.FromFile(file: "start_button_1.png"),
                 BackgroundColor = Color.Transparent,
+                VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Center,
                 HeightRequest = 40,
                 Command = StartButtonCommand,
@@ -87,63 +89,36 @@ namespace MazeGame.ViewModels
                 Text = this.name,
                 TextColor = Color.White,
                 FontAttributes = FontAttributes.Bold,
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions  = LayoutOptions.Center,
             };
-            
 
-            var grid = new Grid
+            var nameStackLayout = new StackLayout
             {
-                RowDefinitions =
+                Margin = 20,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions  = LayoutOptions.Start,
+                Orientation = StackOrientation.Horizontal,
+                Children =
                 {
-                    new RowDefinition(),
-                    new RowDefinition(),
-
-                    new RowDefinition(),
-                    new RowDefinition(),
-                    new RowDefinition(),
-                    
-                    new RowDefinition(),
-                    new RowDefinition(),
-
-                },
-                ColumnDefinitions =
-                {
-                    new ColumnDefinition(),
-                    new ColumnDefinition(),
-                    new ColumnDefinition(),
+                    nameLabel, settingsButton
                 }
                 
             };
-            Grid.SetRow(nameLabel,1);
-            Grid.SetColumn(nameLabel,1);
-            grid.Children.Add(nameLabel);
+
+
+            var stackLayout = new StackLayout
+            {
+                Margin = 30,
+
+                Children =
+                {
+                    nameStackLayout, titleImage, startGameButton
+                }
+            };
             
-            Grid.SetRow(settingsButton,1);
-            Grid.SetColumn(settingsButton,2);
-            grid.Children.Add(settingsButton);
-
-            Grid.SetRow(titleImage,3);
-            Grid.SetColumn(titleImage,1);
-            grid.Children.Add(titleImage);
-
-            Grid.SetRow(startGameButton,5);
-            Grid.SetColumn(startGameButton,1);
-            grid.Children.Add(startGameButton);
-
             
-            /*
-            grid.Children.Add(settingsButton);
-            grid.Children.Add(titleImage);
-            grid.Children.Add(startGameButton);
-            */
-
-            /*
-            grid.Children.Add(nameLabel, 0,1,0,0);
-            grid.Children.Add(settingsButton, 2,2, 0,0);
-            grid.Children.Add(titleImage, 0, 0, 1, 1);
-            grid.Children.Add(startGameButton, 0, 0, 2,2);
-            */
-
-            return grid;
+            return stackLayout;
         }
         
         /**
