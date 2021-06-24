@@ -16,35 +16,19 @@ namespace MazeGame.ViewModels
         private readonly GameplayController _gameplayController;
         private readonly ScoreCalculator _scoreCalculator;
         private readonly ScoreDb _scoreDb;
-        private readonly HintsProvider _hintsProvider;
         private Button _getHintsButton;
         private Label _hintsLeftLabel;
-        
+
         public GameBoardViewModel(int mazeIndex, INavigation navigation, ScoreDb scoreDb)
         {
             _navigation = navigation;
             var mazeSettings = GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]);
             _mazeViewModel = new MazeViewModel(mazeSettings);
-            _gameplayController = new GameplayController(_mazeViewModel);
             _scoreCalculator = new ScoreCalculator();
-            _hintsProvider = new HintsProvider(_mazeViewModel, _gameplayController);
             _scoreDb = scoreDb;
-            _getHintsButton = new Button()
-            {
-                Text = "Get hint",
-                Command = _hintsProvider.GetHintCommand
-            };
-            _hintsLeftLabel = new Label()
-            {
-                Text = $"Hints left {GetRemainingHintsNumber()}",
-                FontSize = 20,
-                VerticalTextAlignment = TextAlignment.Center,
-            };
-            MessagingCenter.Subscribe<HintsProvider> (this, "Hints left updated", (sender) =>
-            {
-                UpdateRemainingHintsNumber();
-            });
             Content = GetContent();
+            _gameplayController = new GameplayController(_mazeViewModel, _getHintsButton, _hintsLeftLabel);
+            _getHintsButton.Command = GetHintCommand;
         }
 
         public Grid Content { get; set; }
@@ -69,6 +53,18 @@ namespace MazeGame.ViewModels
                 VerticalOptions = LayoutOptions.End,
                 Margin = new Thickness(10, 0, 0, 10)
             };
+            
+            _getHintsButton = new Button()
+            {
+                Text = "Get hint"
+            };
+            
+            _hintsLeftLabel = new Label()
+            {
+                Text = $"Hints left {GameplayConsts.START_AMOUNT_OF_HINTS}",
+                FontSize = 20,
+                VerticalTextAlignment = TextAlignment.Center,
+            };
 
             hintStack.Children.Add(_getHintsButton);
 
@@ -77,21 +73,6 @@ namespace MazeGame.ViewModels
             grid.Children.Add(hintStack);
 
             return grid;
-        }
-
-        private int GetRemainingHintsNumber()
-        {
-            return _hintsProvider.HintsLeft;
-        }
-        
-        private void UpdateRemainingHintsNumber()
-        {
-            var remainingHints = GetRemainingHintsNumber();
-            if (remainingHints == 0)
-            {
-                _getHintsButton.IsEnabled = false;
-            }
-            _hintsLeftLabel.Text = $"Hints left {remainingHints}";
         }
 
         private StackLayout GetControls()
@@ -156,6 +137,8 @@ namespace MazeGame.ViewModels
         public ICommand LeftButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveLeftButtonClicked()));
 
         public ICommand UpButtonCommand => new Command(() => ShowWonInfo(_gameplayController.MoveUpButtonClicked()));
+        
+        public ICommand GetHintCommand => new Command(_gameplayController.GetHintClicked);
 
         private async void ShowWonInfo(bool isGameWon)
         {
