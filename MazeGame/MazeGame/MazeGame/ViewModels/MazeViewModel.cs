@@ -3,6 +3,7 @@ using MazeGame.Views;
 using Q_Learning;
 using System.Collections.Generic;
 using System.Linq;
+using MazeGame.MazeConstructors;
 using Xamarin.Forms;
 
 namespace MazeGame.ViewModels
@@ -14,7 +15,7 @@ namespace MazeGame.ViewModels
         public MazeViewModel(MazeSettings settings)
         {
             Settings = settings;
-            _Constructor = new MazeConstructor(settings);
+            _Constructor = new MazeConstructor();
             CellsViewModelsList = GetCellsViewModelsList();
 
             Content = GetMazeVisualization();
@@ -52,7 +53,7 @@ namespace MazeGame.ViewModels
         private Grid GetMazeWalls()
         {
             var walls = new Grid();
-            var wallsList = _Constructor.GetMazeWallsViews();
+            var wallsList = _Constructor.GetMazeWallsViews(Settings);
 
             foreach (var wall in wallsList)
             {

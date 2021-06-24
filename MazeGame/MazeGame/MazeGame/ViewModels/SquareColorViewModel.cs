@@ -1,12 +1,13 @@
 ﻿using MazeGame.Helpers;
 using System.Collections.Generic;
+using MazeGame.MazeConstructors;
 using Xamarin.Forms;
 
 namespace MazeGame.ViewModels
 {
     public class SquareColorViewModel
     {
-        private ESquareState _State;
+        private ESquareState _state;
 
         public SquareColorViewModel(double topLeftX, double topLeftY, double height, double width)
         {
@@ -14,7 +15,8 @@ namespace MazeGame.ViewModels
             TopLeftY = topLeftY;
             Height = height;
             Width = width;
-            Content = GetSquare();
+            var constructor = new MazeConstructor();
+            Content = constructor.GetSquareColorView(width, topLeftX, topLeftY);
             State = ESquareState.Empty;
         }
 
@@ -27,36 +29,20 @@ namespace MazeGame.ViewModels
         {
             get
             {
-                return _State;
+                return _state;
             }
             set
             {
-                _State = value;
+                _state = value;
 
-                if (GetStateColor.TryGetValue(_State, out Color color))
+                if (GetStateColor.TryGetValue(_state, out var color))
                 {
                     Content.Color = color;
                 }
             }
         }
 
-        private BoxView GetSquare()
-        {
-            double canvasPadding = 3;
-
-            var square = new BoxView()
-            {
-                WidthRequest = Width - (canvasPadding * 2),
-                HeightRequest = Height - (canvasPadding * 2),
-                Margin = new Thickness(TopLeftX + canvasPadding, TopLeftY + canvasPadding, 0, 0),
-                VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.Start
-            };
-
-            return square;
-        }
-
-        private Dictionary<ESquareState, Color> GetStateColor => new Dictionary<ESquareState, Color>
+        private static Dictionary<ESquareState, Color> GetStateColor => new Dictionary<ESquareState, Color>
         {
             { ESquareState.Empty, Color.Transparent },
             { ESquareState.Crossed, Color.LightGreen },
