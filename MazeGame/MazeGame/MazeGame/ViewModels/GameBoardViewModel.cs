@@ -15,14 +15,35 @@ namespace MazeGame.ViewModels
         private readonly MazeViewModel _mazeViewModel;
         private readonly GameplayController _gameplayController;
         private readonly ScoreCalculator _scoreCalculator;
+        private readonly ScoreDb _scoreDb;
+        private readonly HintsProvider _hintsProvider;
+        private Button _getHintsButton;
+        private Label _hintsLeftLabel;
         
-        public GameBoardViewModel(int mazeIndex, INavigation navigation)
+        public GameBoardViewModel(int mazeIndex, INavigation navigation, ScoreDb scoreDb)
         {
             _navigation = navigation;
             var mazeSettings = GetMazeSettings(MazeExamples.GetMazeModels().ToArray()[mazeIndex - 1]);
             _mazeViewModel = new MazeViewModel(mazeSettings);
             _gameplayController = new GameplayController(_mazeViewModel);
             _scoreCalculator = new ScoreCalculator();
+            _hintsProvider = new HintsProvider(_mazeViewModel, _gameplayController);
+            _scoreDb = scoreDb;
+            _getHintsButton = new Button()
+            {
+                Text = "Get hint",
+                Command = _hintsProvider.GetHintCommand
+            };
+            _hintsLeftLabel = new Label()
+            {
+                Text = $"Hints left {GetRemainingHintsNumber()}",
+                FontSize = 20,
+                VerticalTextAlignment = TextAlignment.Center,
+            };
+            MessagingCenter.Subscribe<HintsProvider> (this, "Hints left updated", (sender) =>
+            {
+                UpdateRemainingHintsNumber();
+            });
             Content = GetContent();
         }
 
@@ -40,8 +61,37 @@ namespace MazeGame.ViewModels
             });
             
             grid.Children.Add(GetControls());
+            
+            var hintStack = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.End,
+                Margin = new Thickness(10, 0, 0, 10)
+            };
+
+            hintStack.Children.Add(_getHintsButton);
+
+            hintStack.Children.Add(_hintsLeftLabel);
+
+            grid.Children.Add(hintStack);
 
             return grid;
+        }
+
+        private int GetRemainingHintsNumber()
+        {
+            return _hintsProvider.HintsLeft;
+        }
+        
+        private void UpdateRemainingHintsNumber()
+        {
+            var remainingHints = GetRemainingHintsNumber();
+            if (remainingHints == 0)
+            {
+                _getHintsButton.IsEnabled = false;
+            }
+            _hintsLeftLabel.Text = $"Hints left {remainingHints}";
         }
 
         private StackLayout GetControls()
@@ -51,9 +101,9 @@ namespace MazeGame.ViewModels
                 Orientation = StackOrientation.Vertical,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
-                Margin = new Thickness(0, 0, 0, 25)
+                Margin = new Thickness(0, 0, 0, 70)
             };
-            
+
             stack.Children.Add(new Button()
             {
                 Text = "Up",
@@ -112,7 +162,20 @@ namespace MazeGame.ViewModels
             if(!_scoreCalculator.IsGameStarted) _scoreCalculator.StartGame();
             if (!isGameWon) return;
             _scoreCalculator.EndGame();
-            await Current.MainPage.DisplayAlert("You won!", $"Your score is {_scoreCalculator.Score}!", "Thanks!");
+            var score = _scoreCalculator.Score;
+            var scoreObj = new Score
+            {
+                MazeId = _mazeViewModel.Settings.Model.Id,
+                BestScore = score
+            };
+            if (_scoreDb.Get(_mazeViewModel.Settings.Model.Id) != null)
+            {
+                _scoreDb.Update(scoreObj);
+            }
+            else
+                _scoreDb.Add(scoreObj); 
+            MessagingCenter.Send<GameBoardViewModel>(this, "Score updated");
+            await Current.MainPage.DisplayAlert("You won!", $"Your score is {score}!", "Thanks!");
             await _navigation.PopAsync();
         }
 
