@@ -72,6 +72,16 @@
     <ItemGroup>
       <None Include="packages.config" />
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\MazeGame\MazeGame\MazeGame.csproj">
+        <Project>{62d78b57-bbde-4bdd-8e53-ca75b2b8ff48}</Project>
+        <Name>MazeGame</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\MazeGame\QLearning\QLearning.csproj">
+        <Project>{d3089e63-9e1e-4154-be82-1a83e7a2344d}</Project>
+        <Name>QLearning</Name>
+      </ProjectReference>
+    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

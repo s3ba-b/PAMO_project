@@ -4,5 +4,8 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::B1F395E0-60D5-4239-801F-54BDA8EE3181::.NETFramework,Version=v4.7.2::QLearningTests.IntelligenceTests.AreTestsWorking&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::B1F395E0-60D5-4239-801F-54BDA8EE3181::.NETFramework,Version=v4.7.2::QLearningTests.IntelligenceTests.ShouldReturnCorrectMoves&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.MazeConstructors.MazeWallsConstructorTests.ShouldReturnTrueIfBeWallBetween&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.ScoreCalculatorTests.ShouldReturnCorrectScores&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.ScoreCalculatorTests.AreTestsWorking&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
