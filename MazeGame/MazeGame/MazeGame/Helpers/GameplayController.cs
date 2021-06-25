@@ -1,116 +1,106 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using MazeGame.ViewModels;
-using Q_Learning;
-using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace MazeGame.Helpers
 {
-    public class GameplayController
+    public interface IGameplayController
     {
-        private IEnumerable<CellViewModel> _cells;
-        private MazeSettings _mazeSettings;
-        
+        List<int> CrossedCells { get; }
+        bool TryMoveUp();
+        bool TryMoveLeft();
+        bool TryMoveRight();
+        bool TryMoveDown();
+    }
+    
+    public class GameplayController : IGameplayController
+    {
+        private readonly IEnumerable<CellViewModel> _cellsViewModels;
+        private readonly MazeSettings _mazeSettings;
+        private int _currentPosition;
+
         public GameplayController(MazeViewModel mazeViewModel)
         {
-            _cells = mazeViewModel.CellsViewModelsList;
-            CurrentPosition = mazeViewModel.Settings.Model.Start;
+            _cellsViewModels = mazeViewModel.CellsViewModelsList;
             _mazeSettings = mazeViewModel.Settings;
-            CrossedCells.Add(mazeViewModel.Settings.Model.Start);
-            var intelligence = new Intelligence(mazeViewModel.Settings.Model);
-            QLearningPath = intelligence.GetMoves().ToList();
+            CrossedCells = new List<int> {mazeViewModel.Settings.Model.Start};
+            _currentPosition = mazeViewModel.Settings.Model.Start;
         }
         
-        public int CurrentPosition { get; set; }
-        public List<int> QLearningPath { get; set; }
-        public List<int> CrossedCells = new List<int>();
+        public List<int> CrossedCells { get; }
 
-        public bool MoveUpButtonClicked()
+        public bool TryMoveUp()
         {
-            var nextPos = CurrentPosition - _mazeSettings.Model.QuantityOfColumns;
-            if (!IsMoveProhibited(CurrentPosition, nextPos))
-            {
-                CurrentPosition = nextPos;
-                UpdateCrossedList(CurrentPosition);
-                return UpdateState();
-            }
-
-            return false;
+            var nextPos = _currentPosition - _mazeSettings.Model.QuantityOfColumns;
+            if (IsMoveProhibited(_currentPosition, nextPos)) return false;
+            
+            _currentPosition = nextPos;
+            UpdateCrossedList(_currentPosition);
+            return UpdateCellsState();
         }
         
-        public bool MoveLeftButtonClicked()
+        public bool TryMoveLeft()
         {
-            var nextPos = CurrentPosition - 1;
+            var nextPos = _currentPosition - 1;
             var isBorderOfMaze = false;
-            if (CurrentPosition != 0)
+            
+            if (_currentPosition != 0)
             {
-                isBorderOfMaze = CurrentPosition % _mazeSettings.Model.QuantityOfColumns == 0;
-            } if (!(IsMoveProhibited(CurrentPosition, nextPos) || isBorderOfMaze))
-            {
-                CurrentPosition = nextPos;
-                UpdateCrossedList(CurrentPosition);
-                return UpdateState();
+                isBorderOfMaze = _currentPosition % _mazeSettings.Model.QuantityOfColumns == 0;
             }
 
-            return false;
+            if (IsMoveProhibited(_currentPosition, nextPos) || isBorderOfMaze) return false;
+            
+            _currentPosition = nextPos;
+            UpdateCrossedList(_currentPosition);
+            return UpdateCellsState();
+
         }
         
-        public bool MoveRightButtonClicked()
+        public bool TryMoveRight()
         {
-            var nextPos = CurrentPosition + 1;
+            var nextPos = _currentPosition + 1;
             var isBorderOfMaze = false;
-            if (CurrentPosition != 0)
+            
+            if (_currentPosition != 0)
             {
-                isBorderOfMaze = _mazeSettings.Model.QuantityOfColumns % CurrentPosition == 1;
-            }
-            if (!(IsMoveProhibited(CurrentPosition, nextPos) || isBorderOfMaze))
-            {
-                CurrentPosition = nextPos;
-                UpdateCrossedList(CurrentPosition);
-                return UpdateState();
+                isBorderOfMaze = _mazeSettings.Model.QuantityOfColumns % _currentPosition == 1;
             }
 
-            return false;
+            if (IsMoveProhibited(_currentPosition, nextPos) || isBorderOfMaze) return false;
+            
+            _currentPosition = nextPos;
+            UpdateCrossedList(_currentPosition);
+            return UpdateCellsState();
+
         }
         
-        public bool MoveDownButtonClicked()
+        public bool TryMoveDown()
         {
-            var nextPos = CurrentPosition + _mazeSettings.Model.QuantityOfColumns;
-            if (!IsMoveProhibited(CurrentPosition, nextPos))
-            {
-                CurrentPosition = nextPos;
-                UpdateCrossedList(CurrentPosition);
-                return UpdateState();
-            }
+            var nextPos = _currentPosition + _mazeSettings.Model.QuantityOfColumns;
 
-            return false;
+            if (IsMoveProhibited(_currentPosition, nextPos)) return false;
+            
+            _currentPosition = nextPos;
+            UpdateCrossedList(_currentPosition);
+            return UpdateCellsState();
         }
 
-        private bool UpdateState()
+        private bool UpdateCellsState()
         { 
-            if (CurrentPosition == _mazeSettings.Model.Goal)
+            if (_currentPosition == _mazeSettings.Model.Goal)
             {
                 return true;
             }
             
-            _cells.ForEach(x =>
+            _cellsViewModels.ForEach(x =>
             {
                 if (x.Id == _mazeSettings.Model.Start || x.Id == _mazeSettings.Model.Goal)
                 {
                     return;
                 }
-                
-                if (CrossedCells.Contains(x.Id))
-                {
-                    x.State = ESquareState.Crossed;
-                }
-                else
-                {
-                    x.State = ESquareState.Empty;
-                }
+
+                x.State = CrossedCells.Contains(x.Id) ? ESquareState.Crossed : ESquareState.Empty;
             });
 
             return false;
@@ -127,7 +117,7 @@ namespace MazeGame.Helpers
                 CrossedCells.Add(pos);
             }
         }
-
+        
         private bool IsMoveProhibited(int currentPos, int nextPos)
         {
             if (nextPos < 0 || nextPos > _mazeSettings.Model.QuantityOfSquares - 1)

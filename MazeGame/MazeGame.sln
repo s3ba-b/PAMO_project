@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeGame", "MazeGame\MazeGa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLearning", "MazeGame\QLearning\QLearning.csproj", "{D3089E63-9E1E-4154-BE82-1A83E7A2344D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLearningTests", "QLearningTests\QLearningTests.csproj", "{B1F395E0-60D5-4239-801F-54BDA8EE3181}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeGameTests", "MazeGameTests\MazeGameTests.csproj", "{B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,14 @@ Global
 		{D3089E63-9E1E-4154-BE82-1A83E7A2344D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3089E63-9E1E-4154-BE82-1A83E7A2344D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3089E63-9E1E-4154-BE82-1A83E7A2344D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1F395E0-60D5-4239-801F-54BDA8EE3181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F395E0-60D5-4239-801F-54BDA8EE3181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F395E0-60D5-4239-801F-54BDA8EE3181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F395E0-60D5-4239-801F-54BDA8EE3181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

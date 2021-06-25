@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Q_Learning;
 using System.Linq;
 using System.Windows.Input;
 using MazeGame.Helpers;
 using MazeGame.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace MazeGame.ViewModels
 {
