@@ -7,6 +7,9 @@ using Q_Learning;
 
 namespace MazeGame.MazeConstructors
 {
+    /// <summary>
+    /// Methods with logic creating walls views for the maze.
+    /// </summary>
     public interface IMazeWallsConstructor
     {
         IEnumerable<Wall> GetMazeWallsViews();

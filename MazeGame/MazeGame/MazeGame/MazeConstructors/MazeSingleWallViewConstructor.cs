@@ -3,6 +3,9 @@ using Xamarin.Forms.Shapes;
 
 namespace MazeGame.MazeConstructors
 {
+    /// <summary>
+    /// Methods with logic creating a wall view.
+    /// </summary>
     public interface IMazeSingleWallViewConstructor
     {
         Line GetWall(double x1, double y1, double x2, double y2);

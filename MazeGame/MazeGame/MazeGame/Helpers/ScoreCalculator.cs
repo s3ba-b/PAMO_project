@@ -3,6 +3,9 @@ using System.Diagnostics;
 
 namespace MazeGame.Helpers
 {
+    /// <summary>
+    /// Calculator for calculate a player's score in game.
+    /// </summary>
     public interface IScoreCalculator
     {
         int Score { get; }
@@ -26,7 +29,8 @@ namespace MazeGame.Helpers
             {
                 var ts = new TimeSpan(0, 2, 0);
                 var time = ts - _stopwatch.Elapsed;
-                return (int) time.TotalMilliseconds;
+                var score = (int) time.TotalMilliseconds;
+                return score < 0 ? 0 : score;
             }
         }
 

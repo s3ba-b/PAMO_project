@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace MazeGame.Helpers
 {
+    /// <summary>
+    /// Database mock to store player's scores.
+    /// </summary>
     public interface IScoreDb
     {
         void Add(Score score);

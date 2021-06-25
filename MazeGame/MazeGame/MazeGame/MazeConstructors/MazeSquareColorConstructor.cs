@@ -2,6 +2,9 @@
 
 namespace MazeGame.MazeConstructors
 {
+    /// <summary>
+    /// Methods with logic creating a color for cell.
+    /// </summary>
     public interface IMazeSquareColorConstructor
     {
         BoxView GetSquareColorView(double size, double topLeftX, double topLeftY);

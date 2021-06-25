@@ -2,6 +2,9 @@
 
 namespace MazeGame.Helpers
 {
+    /// <summary>
+    /// Data structure used for logic in game.
+    /// </summary>
     public class MazeSettings
     {
         public MazeModel Model { get; set; }

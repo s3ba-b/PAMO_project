@@ -4,6 +4,9 @@ using Xamarin.Forms.Internals;
 
 namespace MazeGame.Helpers
 {
+    /// <summary>
+    /// Controller for the game. Controls for player moves.
+    /// </summary>
     public interface IGameplayController
     {
         List<int> CrossedCells { get; }
