@@ -7,6 +7,6 @@
         <Image Source="title.png"
                HorizontalOptions="Center"
                VerticalOptions="Center"
-               HeightRequest = "250" />
+               Aspect="AspectFill" />
     </StackLayout>
 </ContentPage>

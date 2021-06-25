@@ -36,9 +36,9 @@ namespace MazeGame.ViewModels
             StackLayout stack = new StackLayout
             {
                 Orientation = StackOrientation.Vertical, 
-                HorizontalOptions = LayoutOptions.Center
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
             };
-
 
             for(int i = 1; i <= mazeModelsCount; i++)
             {
