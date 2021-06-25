@@ -33,10 +33,16 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="FluentAssertions, Version=5.10.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a">
+          <HintPath>..\packages\FluentAssertions.5.10.0\lib\net47\FluentAssertions.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System" />
+        <Reference Include="System.Configuration" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
+        <Reference Include="System.Xml.Linq" />
         <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
             <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
         </Reference>
@@ -62,6 +68,9 @@
         <Compile Include="MazeConstructors\MazeSquareColorConstructorTests.cs" />
         <Compile Include="MazeConstructors\MazeWallsConstructorTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
