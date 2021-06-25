@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using System.Windows.Input;
 using MazeGame.Helpers;
-using MazeGame.Views;
+using MazeGame.MazeConstructors;
 using Q_Learning;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -29,119 +28,32 @@ namespace MazeGame.ViewModels
             _scoreCalculator = new ScoreCalculator();
             _scoreDb = scoreDb;
             _gameplayController = new GameplayController(_mazeViewModel);
-            Content = GetContent();
+            var constructor = new MazeConstructor();
+            Content = constructor.GetGameBoardView(
+                _mazeViewModel,
+                out _getHintsButton,
+                out _hintsLeftLabel,
+                GetHintCommand,
+                UpButtonCommand,
+                DownButtonCommand,
+                LeftButtonCommand,
+                RightButtonCommand);
         }
 
         public Grid Content { get; set; }
         public double Width => Current.MainPage.Width;
         public double Height => Current.MainPage.Height;
         
-        public ICommand DownButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveDown()));
+        public Command DownButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveDown()));
 
-        public ICommand RightButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveRight()));
+        public Command RightButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveRight()));
 
-        public ICommand LeftButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveLeft()));
+        public Command LeftButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveLeft()));
 
-        public ICommand UpButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveUp()));
+        public Command UpButtonCommand => new Command(() => ShowWonInfo(_gameplayController.TryMoveUp()));
         
-        public ICommand GetHintCommand => new Command(GetHintClicked);
+        public Command GetHintCommand => new Command(GetHintClicked);
 
-        private Grid GetContent()
-        {
-            var grid = new Grid();
-            
-            grid.Children.Add(new Maze
-            {
-                BindingContext = _mazeViewModel
-            });
-            
-            grid.Children.Add(GetControls());
-            
-            var hintStack = new StackLayout()
-            {
-                Orientation = StackOrientation.Horizontal,
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.End,
-                Margin = new Thickness(10, 0, 0, 10)
-            };
-            
-            _getHintsButton = new Button()
-            {
-                Text = "Get hint",
-                Command = GetHintCommand
-            };
-            
-            _hintsLeftLabel = new Label()
-            {
-                Text = $"Hints left {GameplayConsts.START_AMOUNT_OF_HINTS}",
-                FontSize = 20,
-                VerticalTextAlignment = TextAlignment.Center,
-            };
-
-            hintStack.Children.Add(_getHintsButton);
-
-            hintStack.Children.Add(_hintsLeftLabel);
-
-            grid.Children.Add(hintStack);
-
-            return grid;
-        }
-
-        private StackLayout GetControls()
-        {
-            var stack = new StackLayout()
-            {
-                Orientation = StackOrientation.Vertical,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.End,
-                Margin = new Thickness(0, 0, 0, 70)
-            };
-
-            stack.Children.Add(new Button()
-            {
-                Text = "Up",
-                WidthRequest = 50,
-                HeightRequest = 50,
-                Margin = new Thickness(50, 0, 50,0),
-                Command = UpButtonCommand
-            });
-
-            var internalStack = new StackLayout()
-            {
-                Orientation = StackOrientation.Horizontal,
-                Spacing = 50
-            };
-            
-            stack.Children.Add(internalStack);
-            
-            internalStack.Children.Add(new Button()
-            {
-                Text = "Left",
-                WidthRequest = 50,
-                HeightRequest = 50,
-                Command = LeftButtonCommand
-            });
-            
-            internalStack.Children.Add(new Button()
-            {
-                Text = "Right",
-                WidthRequest = 50,
-                HeightRequest = 50,
-                Command = RightButtonCommand
-            });
-            
-            stack.Children.Add(new Button()
-            {
-                Text = "Down",
-                WidthRequest = 50,
-                HeightRequest = 50,
-                Margin = new Thickness(50, 0, 50,0),
-                Command = DownButtonCommand
-            });
-
-            return stack;
-        }
-        
         private void UpdateRemainingHintsNumber()
         {
             if (_hintsLeft == 0)
@@ -151,7 +63,7 @@ namespace MazeGame.ViewModels
             _hintsLeftLabel.Text = $"Hints left {_hintsLeft}";
         }
 
-        public void GetHintClicked()
+        private void GetHintClicked()
         {
             if (_hintsLeft == 0) return;
             
