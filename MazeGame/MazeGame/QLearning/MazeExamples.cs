@@ -19,7 +19,6 @@ namespace Q_Learning
             var maze = new MazeModel();
 
             maze.Id = 1;
-            maze.QuantityOfSquares = 30;
             maze.Start = 24;
             maze.Goal = 29;
             maze.QuantityOfColumns = 6;
@@ -77,7 +76,6 @@ namespace Q_Learning
             var maze = new MazeModel();
 
             maze.Id = 2;
-            maze.QuantityOfSquares = 60;
             maze.Start = 0;
             maze.Goal = 9;
             maze.QuantityOfColumns = 10;
@@ -159,7 +157,6 @@ namespace Q_Learning
             var maze = new MazeModel();
 
             maze.Id = 3;
-            maze.QuantityOfSquares = 48;
             maze.Start = 0;
             maze.Goal = 47;
             maze.QuantityOfColumns = 8;

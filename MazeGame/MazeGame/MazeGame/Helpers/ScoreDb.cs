@@ -1,10 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MazeGame.Helpers
 {
-    public class ScoreDb
+    public interface IScoreDb
+    {
+        void Add(Score score);
+        List<Score> Get();
+        Score Get(int mazeId);
+        void Update(Score score);
+        void Delete(Score score);
+    }
+    
+    public class ScoreDb : IScoreDb
     {
         private readonly List<Score> _scores;
 

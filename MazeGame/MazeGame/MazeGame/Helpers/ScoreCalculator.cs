@@ -3,9 +3,17 @@ using System.Diagnostics;
 
 namespace MazeGame.Helpers
 {
-    public class ScoreCalculator
+    public interface IScoreCalculator
     {
-        public Stopwatch _stopwatch;
+        int Score { get; }
+        bool IsGameStarted { get; }
+        void StartGame();
+        void EndGame();
+    }
+    
+    public class ScoreCalculator : IScoreCalculator
+    {
+        private readonly Stopwatch _stopwatch;
 
         public ScoreCalculator()
         {
