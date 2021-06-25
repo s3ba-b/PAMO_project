@@ -7,7 +7,7 @@ namespace MazeGame.Views
         public StartScreen()
         {
             InitializeComponent();
-            BindingContext = new StartScreenViewModel(Navigation);
+            BindingContext = StartScreenViewModel.GetStartScreenViewModel(Navigation);
         }
     }
 }
