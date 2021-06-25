@@ -10,7 +10,7 @@ namespace MazeGame
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage( new Views.Menu() );
+            MainPage = new NavigationPage( new Views.StartScreen() );
         }
 
         protected override void OnStart()
