@@ -14,5 +14,8 @@
     &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.HintsProviderTests.HintShouldBeCorrect&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.HintsProviderTests.AreTestsWorking&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.ScoreCalculatorTests.ShouldReturnZero&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.HintsProviderTests.Hint1ShouldBeCorrect&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.HintsProviderTests.Hint3ShouldBeCorrect&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.HintsProviderTests.Hint2ShouldBeCorrect&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
