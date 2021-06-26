@@ -10,5 +10,6 @@
     &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.ScoreDbTests.ScoreShouldBeAdded&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.ScoreDbTests.ScoreShouldBeUpdated&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.ScoreDbTests.ScoreShouldBeDeleted&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B7A03C89-B6D7-4441-8D6B-0DD3D65FC85E::.NETFramework,Version=v4.7.2::MazeGameTests.Helpers.ScoreDbTests.AreTestsWorking&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

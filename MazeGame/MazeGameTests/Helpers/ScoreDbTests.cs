@@ -1,14 +1,19 @@
-﻿using MazeGame.Helpers;
+﻿using System;
+using System.Xml;
+using MazeGame.Helpers;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MazeGameTests.Helpers
 {
     public class ScoreDbTests
     {
+        private readonly ITestOutputHelper _testOutputHelper;
         private readonly ScoreDb _sut;
 
-        public ScoreDbTests()
+        public ScoreDbTests(ITestOutputHelper testOutputHelper)
         {
+            _testOutputHelper = testOutputHelper;
             _sut = new ScoreDb();
         }
         
@@ -66,7 +71,7 @@ namespace MazeGameTests.Helpers
             
             
             // then
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.BestScore, actual.BestScore);
         }
     }
 }
