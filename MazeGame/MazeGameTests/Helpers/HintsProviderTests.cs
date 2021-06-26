@@ -9,7 +9,7 @@ namespace MazeGameTests.Helpers
     public class HintsProviderTests
     {
         
-        private readonly MazeModel _model; 
+        private MazeModel _model; 
         
         public HintsProviderTests()
         {
@@ -82,8 +82,8 @@ namespace MazeGameTests.Helpers
         public void Hint2ShouldBeCorrect()
         {
             // given
-            var expected = new List<int> {6, 3, 0};
-            var crossedCells = new List<int> {0, 3, 4};
+            var expected = new List<int> {0, 3, 4};
+            var crossedCells = new List<int>  {6, 3, 0};
             var sut = new HintsProvider(crossedCells, _model);
             
             // when
@@ -98,8 +98,8 @@ namespace MazeGameTests.Helpers
         public void Hint3ShouldBeCorrect()
         {
             // given
-            var expected = new List<int> {6, 3, 0, 1};
-            var crossedCells = new List<int> {1, 0, 3};
+            var expected = new List<int> {0, 1, 3};
+            var crossedCells = new List<int> {6, 3, 0, 1};
             var sut = new HintsProvider(crossedCells, _model);
             
             // when
