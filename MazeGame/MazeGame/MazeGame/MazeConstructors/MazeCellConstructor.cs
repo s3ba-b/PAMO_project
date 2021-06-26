@@ -5,6 +5,9 @@ using Xamarin.Forms.Shapes;
 
 namespace MazeGame.MazeConstructors
 {
+    /// <summary>
+    /// Methods which are used for creating a cell view.
+    /// </summary>
     public interface IMazeCellConstructor
     {
         Grid GetCellView();

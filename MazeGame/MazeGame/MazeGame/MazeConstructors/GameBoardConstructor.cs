@@ -5,6 +5,22 @@ using Xamarin.Forms;
 
 namespace MazeGame.MazeConstructors
 {
+    /// <summary>
+    /// Methods used for creating gameboard view.
+    /// </summary>
+    public interface IGameBoardConstructor
+    {
+        Grid GetGameBoardView(
+            MazeViewModel mazeViewModel,
+            out Button getHintsButton,
+            out Label hintsLeftLabel,
+            Command getHintCommand,
+            Command upButtonCommand,
+            Command downButtonCommand,
+            Command leftButtonCommand,
+            Command rightButtonCommand);
+    }
+    
     public class GameBoardConstructor
     {
         public Grid GetGameBoardView(

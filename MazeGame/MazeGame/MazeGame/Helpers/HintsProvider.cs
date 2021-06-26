@@ -4,6 +4,9 @@ using Q_Learning;
 
 namespace MazeGame.Helpers
 {
+    /// <summary>
+    /// Logic which returns indexes of cells which should be assigned as a hint.
+    /// </summary>
     public interface IHintsProvider
     {
         IEnumerable<int> GetHintCellsIndexes();

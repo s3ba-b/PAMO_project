@@ -21,4 +21,4 @@ The purpose of the application is to present the role of machine learning in gam
 - Ensuring that clues are displayed correctly in relation to the player's current position on the board.
 - Maintaining a properly functioning game logic.
 ## Authors
-Katarzyan Czerwińska, Sebastian Bobrowski, Tomasz Mnich
+Katarzyna Czerwińska, Sebastian Bobrowski, Tomasz Mnich

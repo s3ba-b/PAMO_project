@@ -8,6 +8,9 @@ using Xamarin.Forms.Shapes;
 
 namespace MazeGame.MazeConstructors
 {
+    /// <summary>
+    /// Methods with logics creating the whole views in game.
+    /// </summary>
     public interface IMazeConstructor
     {
         Grid GetGameBoardView(
