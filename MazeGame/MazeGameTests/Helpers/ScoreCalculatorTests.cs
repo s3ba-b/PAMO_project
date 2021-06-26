@@ -31,7 +31,6 @@ namespace MazeGameTests.Helpers
             _sut.StartGame();
             testTime.Start();
 
-
             // when
             Thread.Sleep(1500);
             _sut.EndGame();
@@ -45,6 +44,23 @@ namespace MazeGameTests.Helpers
             Assert.InRange(_sut.Score, scores-100, scores);
 
         }
+        
+        [Fact]
+        public void ShouldReturnZero(){
+            // given
+            _sut.StartGame();
+
+            // when
+            Thread.Sleep(120002);
+            _sut.EndGame();
+
+            
+            // then
+            _testOutputHelper.WriteLine(_sut.Score.ToString());
+            Assert.Equal(0, _sut.Score);
+
+        }
+
     }
     
 

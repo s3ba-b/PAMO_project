@@ -28,9 +28,9 @@ namespace MazeGameTests.Helpers
         {
             // given
             Score expected = new Score {MazeId = 1, BestScore = 1500};
-            _sut.Add(expected);
-            
+
             // when
+            _sut.Add(expected);
             var actual = _sut.Get(1);
             
             
@@ -44,9 +44,9 @@ namespace MazeGameTests.Helpers
         {
             // given
             Score score = new Score {MazeId = 1, BestScore = 1500};
-            _sut.Add(score);
-            
+
             // when
+            _sut.Add(score);
             _sut.Delete(score);
             var actual = _sut.Get(1);
             
@@ -58,17 +58,17 @@ namespace MazeGameTests.Helpers
 
         
         [Fact]
+        // This test takes 2 minutes!
         public void ScoreShouldBeUpdated()
         {
             // given
             _sut.Add(new Score {MazeId = 1, BestScore = 1200});
+
+            // when
             Score expected = new Score {MazeId = 1, BestScore = 1500};
             _sut.Update(expected);
-            
-            // when
-            
             var actual = _sut.Get(1);
-            
+           
             
             // then
             Assert.Equal(expected.BestScore, actual.BestScore);
