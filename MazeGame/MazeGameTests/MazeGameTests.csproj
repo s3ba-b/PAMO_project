@@ -61,12 +61,6 @@
         <Compile Include="Helpers\HintsProviderTests.cs" />
         <Compile Include="Helpers\ScoreCalculatorTests.cs" />
         <Compile Include="Helpers\ScoreDbTests.cs" />
-        <Compile Include="MazeConstructors\GameBoardConstructorTests.cs" />
-        <Compile Include="MazeConstructors\MazeCellConstructorTests.cs" />
-        <Compile Include="MazeConstructors\MazeConstructorTests.cs" />
-        <Compile Include="MazeConstructors\MazeSingleWallViewConstructorTests.cs" />
-        <Compile Include="MazeConstructors\MazeSquareColorConstructorTests.cs" />
-        <Compile Include="MazeConstructors\MazeWallsConstructorTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -81,6 +75,9 @@
         <Project>{d3089e63-9e1e-4154-be82-1a83e7a2344d}</Project>
         <Name>QLearning</Name>
       </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="MazeConstructors" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
