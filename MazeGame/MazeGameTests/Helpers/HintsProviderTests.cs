@@ -9,7 +9,8 @@ namespace MazeGameTests.Helpers
     public class HintsProviderTests
     {
         
-        private readonly HintsProvider _sut;
+        private readonly MazeModel _model; 
+        
         public HintsProviderTests()
         {
             // How the maze model looks like:
@@ -40,7 +41,7 @@ namespace MazeGameTests.Helpers
             reward[6][7] = reward[7][3] = reward[7][8] = reward[8][7] = -0.01;
             reward[5][2] = 10000.0;
             
-            var model = new MazeModel
+            _model = new MazeModel
             {
                 Id = 1,
                 Goal = 2,
@@ -53,8 +54,7 @@ namespace MazeGameTests.Helpers
                 Reward = reward
 
             };
-            var crossedCells = new List<int> {6};
-            _sut = new HintsProvider(crossedCells, model);
+
         }
         
         [Fact]
@@ -64,16 +64,52 @@ namespace MazeGameTests.Helpers
         }
 
         [Fact]
-        public void HintShouldBeCorrect()
+        public void Hint1ShouldBeCorrect()
         {
             // given
             var expected = new List<int> {3, 4, 5};
+            var crossedCells = new List<int> {6};
+            var sut = new HintsProvider(crossedCells, _model);
             
             // when
-            var actual = _sut.GetHintCellsIndexes();
+            var actual = sut.GetHintCellsIndexes();
 
             // then
             actual.Should().Equal(expected);
         }
+        
+        [Fact]
+        public void Hint2ShouldBeCorrect()
+        {
+            // given
+            var expected = new List<int> {6, 3, 0};
+            var crossedCells = new List<int> {0, 3, 4};
+            var sut = new HintsProvider(crossedCells, _model);
+            
+            // when
+            var actual = sut.GetHintCellsIndexes();
+
+            // then
+            actual.Should().Equal(expected);
+
+        }
+        
+        [Fact]
+        public void Hint3ShouldBeCorrect()
+        {
+            // given
+            var expected = new List<int> {6, 3, 0, 1};
+            var crossedCells = new List<int> {1, 0, 3};
+            var sut = new HintsProvider(crossedCells, _model);
+            
+            // when
+            var actual = sut.GetHintCellsIndexes();
+
+            // then
+            actual.Should().Equal(expected);
+        }
+        
     }
+    
+    
 }
