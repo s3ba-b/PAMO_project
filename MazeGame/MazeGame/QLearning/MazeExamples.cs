@@ -11,7 +11,8 @@ namespace Q_Learning
         {
             Example_1(),
             Example_2(),
-            Example_3()
+            Example_3(),
+            Example_4()
         };
 
         private static MazeModel Example_1()
