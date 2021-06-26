@@ -10,7 +10,7 @@ namespace MazeGameTests.Helpers
     public class ScoreCalculatorTests
     {
         private readonly ITestOutputHelper _testOutputHelper;
-        private ScoreCalculator _sut;
+        private readonly ScoreCalculator _sut;
         public ScoreCalculatorTests(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
@@ -41,6 +41,7 @@ namespace MazeGameTests.Helpers
             
             // then
             _testOutputHelper.WriteLine(_sut.Score.ToString());
+            // 100 milliseconds is added as a range because the test is not executed exactly at the same time    
             Assert.InRange(_sut.Score, scores-100, scores);
 
         }

@@ -45,7 +45,7 @@ namespace MazeGame.MazeConstructors
             return walls;
         }
 
-        public bool ShouldBeWallBetween(int firstSquareIndex, int secondSquareIndex)
+        private bool ShouldBeWallBetween(int firstSquareIndex, int secondSquareIndex)
         {
             var indexesAreNotTheSame = firstSquareIndex != secondSquareIndex;
             var squaresAreNeighbors = (firstSquareIndex - secondSquareIndex == 1) ||
